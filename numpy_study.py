@@ -295,4 +295,98 @@ print(a3[2, 2, 2])
 print(a3[2, -1, -1])
 print()
 
+# 슬라이싱
+
+# 1차원 배열 슬라이싱 방법 배열[start:stop:step]
+print('1차원 배열 슬라이싱 방법 배열[start:stop:step]')
+print(a1)       # 전체
+print(a1[0:2])  # 처음부터 세번째 전 까지
+print(a1[0:])   # 처음부터 끝까지
+print(a1[:1])   # 처음부터 두번째 전 까지
+print(a1[::2])  # 처음부터 끝까지 2칸 간격으로 출
+print(a1[::-1]) # 처음부터 끝까지 뒤에서부터 출력
+print()
+
+# 2차원 배열 슬라이싱 방법 배열[start:stop:step, start:stop:step]
+print('2차원 배열 슬라이싱 방법 배열[start:stop:step, start:stop:step]')
+print(a2)
+print(a2[1])
+print(a2[1, :])
+print(a2[:2, :2])
+print(a2[1:, ::-1])
+print(a2[::-1, ::-1])
+print()
+
+# 불리언 인덱싱
+
+# 불리언 값이 True인 위치인 것만 출력
+print('불리언 값이 True인 위치인 것만 출력')
+print(a1)
+bi = [False, True, True, False, True]
+print(bi)
+print(a1[bi])
+bi = [True, False, True, True, False]
+print(bi)
+print(a1[bi])
+print()
+
+# 2차원 불리언 인덱싱 방법
+print('2차원 불리언 인덱싱 방법')
+print(a2)
+bi_2 = np.random.randint(0, 2, (3, 3), dtype = bool)
+print(bi_2)
+print(a2[bi_2])
+print()
+
+# 팬시 인덱싱
+
+# 1차원 배열 팽시 인덱싱
+print('1차원 배열 팬시 인덱싱')
+print(a1)
+print([a1[0], a1[2]])
+ind = [0, 2]
+print(ind)
+print(a1[ind])
+# 1차원 배열이라도 2차원 배열처럼 출력할 수 있다.
+print('1차원 배열이라도 2차원 배열처럼 출력할 수 있다.')
+ind_2 = np.array([[0, 1],
+                 [2, 0]])
+print(ind_2)
+print(a1[ind_2]) 
+print()
+
+# 2차원 배열 팬시 인덱싱
+print('2차원 배열 팬시 인덱싱')
+print(a2)
+row = np.array([0, 2])
+print(row)
+col = np.array([1, 2])
+print(col)
+print(a2[row, col])
+print(a2[row, :])
+print(a2[:, col])
+print(a2[row, 1])
+print(a2[2, col])
+print(a2[row, 1:])
+print(a2[1:, col])
+print()
+# =============================================================================
+
+
+
+# 배열 값 삽입/수정/삭제/복사
+# =============================================================================
+ 
+# 배열 값 삽입
+# insert() : 배열의 특정 위치에 값 삽입
+# axis를 지정하지 않으면 1차원 배열로 변환
+# 추가할 방향을 axis로 지정
+# 원본 배열 변경없이 새로운 배열 반환
+print('1차원 배열에 값 삽입')
+print(a1)
+b1 = np.insert(a1, 0, 10)
+print(b1)
+print(a1)
+print()
+
 # =============================================================================
