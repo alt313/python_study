@@ -457,7 +457,7 @@ print(a2[:2, :2])
 a2_sub = a2[:2, :2]
 print(a2_sub)
 a2_sub[:, 1] = 0
-print(a2_sub)
+print(a2_sub) 
 print(a2)
 print()
 # 원본배열의 값도 바뀐다.
@@ -481,5 +481,125 @@ print()
 # =============================================================================
 
 # 배열 전치 및 축 변경
+
+print('배열 전치 및 축 변경')
+print(a2)
+print(a2.T)
+print(a3)
+print(a3.T)
+
+# 배열 재구조화
+
+# reshape() : 배열의 형상을 변경
+print('reshape() : 배열의 형상을 변경')
+n1 = np.arange(1, 10)
+print(n1)
+print(n1.reshape(3, 3))
+print()
+
+# newaxis() : 새로운 축 추가
+print('newaxis() : 새로운 축 추가')
+print(n1)
+print(n1[np.newaxis, :5])
+print(n1[:5, np.newaxis])
+print()
+
+# 배열 크기 변경
+
+# 배열 모양 변경
+print('배열 모양 변경')
+n2 = np.random.randint(0, 10, (2, 5))
+print(n2)
+n2.resize((5, 2)) # 바로 변경된다.
+print(n2)
+print()
+
+# 배열 크기 증가
+# 남은 공간은 0으로 채워진다.
+print('배열 크기 증가')
+n2.resize((5, 5), refcheck = False)
+# 현재 python 3.8버전 에서만 그런지 모르지만 강의에서는 뒤에 옵션을 붙이지 않고
+# 사용했지만 refcheck=False 옵션을 써줘야 가능하다.
+print(n2)
+print()
+
+# 배열 크기 감소
+# 포함되지 않은 값은 삭제됨
+print('배열 크기 감소')
+n2.resize((3, 3), refcheck = False)
+print(n2)
+print()
+
+# 배열 추가
+
+# append() : 배열 끝에 값 추가
+# axis지정이 없다면 1차원 배열 형태로 변형되어 결합된다.
+print('append() : 배열 끝에 값 추가')
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+b2 = np.arange(10, 19).reshape(3, 3)
+print(b2)
+c2 = np.append(a2, b2)
+print(c2)
+print()
+
+# axis를 0으로 지정
+# shape[0]을 제외한 나머지 shape은 같아야 함
+print('axis를 0으로 지정')
+c2 = np.append(a2, b2, axis = 0)
+print(c2)
+print()
+
+# axis를 1로 지정
+# shape[1]을 제외한 나머지 shape은 같아야 함
+print('axis를 1로 지정')
+c2 = np.append(a2, b2, axis = 1)
+print(c2)
+print()
+
+# 배열 연결
+
+# concatenate() : 튜플이나 배열의 리스트를 인수로 사용해 배열 연결
+print('concatenate() : 튜플이나 배열의 리스트를 인수로 사용해 배열 연결')
+a1 = np.array([1, 3, 5])
+print(a1)
+b1 = np.array([2, 4, 6])
+print(b1)
+print(np.concatenate([a1, b1]))
+c1 = np.array([7, 8, 9])
+print(c1)
+print(np.concatenate([a1, b1, c1]))
+print()
+
+print('axis=1로 추가')
+a2 = np.array([[1, 2, 3],
+                [4, 5, 6]])
+print(a2)
+print(np.concatenate([a2, a2], axis = 1))
+
+# vstack() : 수직 스택, 1차원으로 연결
+print('vstack() : 수직 스택, 1차원으로 연결')
+np.vstack([a2, a2])
+print()
+
+# hstack() : 수평 스택, 2차원으로 연결
+print('hstack() : 수평 스택, 2차원으로 연결')
+np.hstack([a2, a2])
+print()
+
+# dstack() : 깊이 스택, 3차원으로 연결
+print('dstack() : 깊이 스택, 3차원으로 연결')
+np.dstack([a2, a2])
+print()
+
+# stack() : 새로운 차원으로 연결
+print('stack() : 새로운 차원으로 연결')
+np.stack([a2, a2])
+print()
+
+# 배열 분할
+
+
 # =============================================================================
+
 
