@@ -599,6 +599,27 @@ print()
 
 # 배열 분할
 
+# split() : 배열 분할
+print('split() : 배열 분할')
+a1 = np.arange(0, 10)
+print(a1)
+b1, c1 = np.split(a1, [5]) # split하는 위치를 기반으로 나뉜다.
+print(b1, c1)
+b1, c1, d1, e1, f1 = np.split(a1, [2, 4, 6, 8])
+print(b1, c1, d1, e1, f1)
+print()
+
+# vsplit() : 수직 분할, 1차원으로 분할
+print('vsplit() : 수직 분할, 1차원으로 분할')
+print()
+
+# hsplit() : 수평 분할, 2차원으로 분할
+print('hsplit() : 수평 분할, 2차원으로 분할')
+print()
+
+# dsplit() : 깊이 분할, 3차원으로 분할
+print('bsplit() : 깊이 분할, 3차원으로 분할')
+print()
 
 # =============================================================================
 
