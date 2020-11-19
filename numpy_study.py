@@ -611,16 +611,161 @@ print()
 
 # vsplit() : 수직 분할, 1차원으로 분할
 print('vsplit() : 수직 분할, 1차원으로 분할')
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+b2, c2 = np.vsplit(a2, [2])
+print(b2)
+print(c2)
 print()
 
 # hsplit() : 수평 분할, 2차원으로 분할
 print('hsplit() : 수평 분할, 2차원으로 분할')
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+b2, c2 = np.hsplit(a2, [2])
+print(b2)
+print(c2)
 print()
 
 # dsplit() : 깊이 분할, 3차원으로 분할
 print('bsplit() : 깊이 분할, 3차원으로 분할')
+a3 = np.arange(1, 28).reshape(3, 3, 3)
+print(a3)
+b3, c3 = np.dsplit(a3, [2])
+print(b3)
+print(c3)
 print()
-
 # =============================================================================
 
 
+
+# 배열 연산
+# =============================================================================
+
+# 브로드 캐스팅
+
+print('브로드 캐스팅')
+a1 = np.array([1, 2, 3])
+print(a1)
+print(a1 + 5)
+print()
+
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+print(a1 + a2)
+print()
+
+a3 = np.arange(1, 4).reshape(3, 1)
+print(a3)
+print(a1 + a3)
+print()
+
+# 산술 연산
+
+a1 = np.arange(1, 10)
+print(a1)
+print(a1 + 1)
+print(np.add(a1, 10)) # 더하기 해주는 함수
+print(a1 - 2)
+print(np.subtract(a2, 10)) # 빼기 해주는함수
+print(-a1)
+print(np.negative(a1)) # 양수 => 음수, 음수 => 양수
+print(a1 * 2)
+print(np.multiply(a1, 2)) # 곱하기 해주는 함수
+print(a1 / 2)
+print(np.divide(a1, 2)) # 나누기 해주는 함수
+print(a1 // 2)
+print(np.floor_divide(a1, 2)) # 나누고 소수점을 내림(몫)
+print(a1 ** 2)
+print(np.power(a1, 2)) # 거듭제곱 해주는 함수
+print(a1 % 2) 
+print(np.mod(a1, 2)) # 나누고 나머지 알려주는 함수
+print()
+
+a1 = np.arange(1, 10)
+print(a1)
+b1 = np.random.randint(1, 10, size = 9) # 랜덤으로 1부터 9까지 숫자를 9개 뽑는다
+print(b1)
+print(a1 + b1)
+print(a1 - b1)
+print(a1 * b1)
+print(a1 / b1)
+print(a1 // b1)
+print(a1 ** b1)
+print(a1 % b1)
+print()
+
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+b2 = np.random.randint(1, 10, size = (3, 3))
+print(b2)
+print(a2 + b2)
+print(a2 - b2)
+print(a2 * b2)
+print(a2 / b2)
+print(a2 // b2)
+print(a2 ** b2)
+print(a2 % b2)
+print()
+
+# 절대값 함수
+# absolute(), abs() : 내장된 절대값 함수
+print('absolute(), abs() : 내장된 절대값 함수')
+a1 = np.random.randint(-10, 10, size = 5)
+print(a1)
+print(np.absolute(a1))
+print(np.abs(a1))
+print()
+
+# 제곱/제곱근 함수
+# square, sqrt : 제곱, 제곱근 함수
+print('square(), sqrt() : 제곱 제곱근 함수')
+print(a1)
+print(np.square(a1))
+print(np.sqrt(a1))
+print()
+
+# 지수와 로그 함수
+
+# 지수
+print('지수')
+a1 = np.random.randint(1, 10, size = 5)
+print(a1)
+print(np.exp(a1))
+print(np.exp2(a1))
+print(np.power(a1, 2))
+print()
+
+# 로그
+print('로그')
+print(np.log(a1))
+print(np.log2(a1))
+print(np.log10(a1))
+print()
+
+# 삼각 함수
+print('삼각 함수')
+t = np.linspace(0, np.pi, 3)
+print(t)
+print(np.sin(t))
+print(np.cos(t))
+print(np.tan(t))
+x = [-1, 0, 1]
+print(x)
+print(np.arcsin(x))
+print(np.arccos(x))
+print(np.arctan(x))
+print()
+
+# 집계 함수
+# sum() : 합 계산
+print('sum() : 합 계산')
+a2 = np.random.randint(1, 10, size = (3, 3))
+print(a2)
+print(a2.sum(), np.sum(a2))
+print(a2.sum(axis = 0), np.sum(a2, axis = 0))
+print(a2.sum(axis = 1), np.sum(a2, axis = 1))
+print()
+
+
+# =============================================================================
