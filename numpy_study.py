@@ -873,18 +873,130 @@ print()
 
 # argmin() : 최소값 인덱스
 print('argmin() : 최소값 인덱스')
-
+print(a2)
+print(np.argmin(a2))
+print(np.argmin(a2, axis = 0))
+print(np.argmin(a2, axis = 1))
 print()
 
 # argmax() : 최대값 인덱스
 print('argmax() : 최대값 인덱스')
+print(a2)
+print(np.argmax(a2))
+print(np.argmax(a2, axis = 0))
+print(np.argmax(a2, axis = 1))
 print()
 
 # median() : 중앙값
 print('median() : 중앙값')
+print(a2)
+print(np.median(a2))
+print(np.median(a2, axis = 0))
+print(np.median(a2, axis = 1))
 print()
 
 # percentile() : 백분위 수
 print('percentile() : 백분위 수')
+print(a1)
+print(np.percentile(a1, [0, 20, 40, 60, 80, 100], interpolation = 'linear'))
+print(np.percentile(a1, [0, 20, 40, 60, 80, 100], interpolation = 'higher'))
+print(np.percentile(a1, [0, 20, 40, 60, 80, 100], interpolation = 'lower'))
+print(np.percentile(a1, [0, 20, 40, 60, 80, 100], interpolation = 'nearest'))
+print(np.percentile(a1, [0, 20, 40, 60, 80, 100], interpolation = 'midpoint'))
 print()
+
+# any() : 
+print('any() : 하나라도 True면 True')
+a2 = np.array([[False, False, False],
+               [False, True, True],
+               [False, True, True]])
+print(a2)
+print(np.any(a2))
+print(np.any(a2, axis = 0))
+print(np.any(a2, axis = 1))
+print()
+
+# all() : 전부 True면 True
+print('all() : 전부 True면 True')
+print(a2)
+print(np.all(a2))
+print(np.all(a2, axis = 0))
+print(np.all(a2, axis = 1))
+print()
+
+# 비교 연산
+
+# 1차원 배열 비교 연산
+print('1차원 배열 비교 연산')
+a1 = np.arange(1, 10)
+print(a1)
+print(a1 == 5)
+print(a1 != 5)
+print(a1 < 5)
+print(a1 <= 5)
+print(a1 > 5)
+print(a1 >= 5)
+print()
+
+# 2차원 배열 비교 연산
+print('2차원 배열 비교 연산')
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+print(np.sum(a2))
+print(np.sum(a2 > 5))
+print(np.sum(a2 > 5, axis = 0))
+print(np.sum(a2 > 5, axis = 1))
+print(np.count_nonzero(a2 > 5))
+print(np.any(a2 > 5))
+print(np.any(a2 > 5, axis = 0))
+print(np.any(a2 > 5, axis = 1))
+print(np.all(a2 > 5))
+print(np.all(a2 > 5, axis = 0))
+print(np.all(a2 > 5, axis = 1))
+print()
+
+# 
+a1 = np.array([1, 2, 3, 4, 5])
+print(a1)
+b1 = np.array([1, 2, 3, 3, 4])
+print(b1)
+print(np.isclose(a1, b1))
+print()
+
+a1 = np.array([np.nan, 2, np.inf, 4, np.NINF])
+print(a1)
+print(np.isnan(a1))    # nan인것 찾기
+print(np.isinf(a1))    # 무한대인것 찾기
+print(np.isfinite(a1)) # 무한대가 아닌것 찾기
+print()
+
+# 불리언 연산자
+print('불리언 연산자')
+a2 = np.arange(1, 10).reshape(3, 3)
+print(a2)
+
+# & 연산자(AND)
+print('& 연산자(AND')
+print((a2 > 5) & (a2 < 8))
+print(a2[(a2 > 5) & (a2 < 8)])
+print()
+
+# | 연산자 (OR)
+print('| 연산자(OR)')
+print((a2 > 5) | (a2 < 8))
+print(a2[(a2 > 5) | (a2 < 8)])
+print()
+
+# ^ 연산자(XOR)
+print('^ 연산자(XOR)')
+print((a2 > 5) ^ (a2 < 8))
+print(a2[(a2 > 5) ^ (a2 < 8)])
+print()
+
+# ~ 연산자(NOT)
+print('~ 연산자(NOT)')
+print(~(a2 > 5))
+print(a2[~(a2 > 5)])
+print()
+
 # =============================================================================
