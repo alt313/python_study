@@ -999,4 +999,45 @@ print(~(a2 > 5))
 print(a2[~(a2 > 5)])
 print()
 
+# 배열 정렬
+
+# 1차원 배열 정렬
+print('1차원 배열 정렬')
+a1 = np.random.randint(1, 10, size = 10)
+print(a1)
+print(np.sort(a1))
+print(a1)
+print(np.argsort(a1)) # 위치값으로 sort한다
+print(a1)
+print()
+
+# 2차원 배열 정렬
+print('2차원 배열 정렬')
+a2 = np.random.randint(1, 10, size = (3, 3))
+print(a2)
+print(np.sort(a2, axis = 0))
+print(np.sort(a2, axis = 1))
+print()
+
+# 부분정렬
+# partition() : 배열에서 k개의 작은 값을 반환
+print('partition() : 배열에서 k개의 작은 값을 반환')
+a1 = np.random.randint(1, 10, size = 10)
+print(a1)
+print(np.partition(a1, 3))
+print()
+a2 = np.random.randint(1, 10, size = (5, 5))
+print(a2)
+print(np.partition(a2, 3))
+print(np.partition(a2, 3, axis = 0))
+print(np.partition(a2, 3, axis = 1))
+print()
+# =============================================================================
+
+
+
+
+# 배열 입출력
+# =============================================================================
+
 # =============================================================================
