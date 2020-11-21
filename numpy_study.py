@@ -17,7 +17,10 @@ Created on Sun Nov 15 18:55:48 2020
 # =============================================================================
 
 # numpy호출
+print('numpy호출')
 import numpy as np
+print()
+
 # numpy 현재 버전 출력
 print('numpy 현재 버전 출력')
 print(np.__version__)
