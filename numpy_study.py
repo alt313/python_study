@@ -1040,4 +1040,52 @@ print()
 # 배열 입출력
 # =============================================================================
 
+# np.save() : numpy배열 객체 1개를 파일에 저장 - 바이너리
+print('np.save() : numpy배열 객체 1개를 파일에 저장 - 바이너리')
+a2 = np.random.randint(1, 10, size = (5, 5))
+print(a2)
+np.save('a', a2)
+print()
+
+# np.savez() : numpy배열 객체 여러개를 파일에 저장 - 바이너리
+print('np.savez() : numpy배열 객체 여러개를 파일에 저장 - 바이너리')
+b2 = np.random.randint(1, 10, size = (5, 5))
+print(b2)
+np.savez('ab', a2, b2)
+print()
+
+# np.load() : numpy배열 저장 파일로부터 객체 로딩 - 바이너리
+print('np.load() : numpy배열 저장 파일로부터 객체 로딩 - 바이너리')
+npy = np.load('a.npy')
+print(npy)
+npz = np.load('ab.npz')
+print(npz.files)
+print(npz['arr_0'])
+print(npz['arr_1'])
+print()
+
+# np.savetxt() : 텍스트 파일에 numpy배열 객체 저장 - 텍스트
+print('np.savetxt() : 텍스트 파일에 numpy배열 객체 저장 - 텍스트')
+print(a2)
+np.savetxt('a.csv', a2, delimiter = ',')
+print(b2)
+np.savetxt('b.csv', b2, delimiter = ',', fmt = '%.2e', header = 'c1, c2, c3, c4, c5')
+print()
+
+# np.loadtxt() : 텍스트 파일로부터 배열 로딩 - 텍스트
+print('np.loadtxt() : 텍스트 파일로부터 배열 로딩 - 텍스트')
+csv = np.loadtxt('a.csv', delimiter = ',')
+print(csv)
+csv2 = np.loadtxt('b.csv', delimiter = ',')
+print(csv2)
+print()
+# =============================================================================
+
+
+# 참고문헌
+
+# =============================================================================
+
+# https://numpy.org
+print('https://numpy.org')
 # =============================================================================
