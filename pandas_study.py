@@ -334,4 +334,20 @@ print(pd.MultiIndex.from_tuples([('a', 1), ('a', 2), ('b', 1), ('b', 2), ('c', 1
 print(pd.MultiIndex.from_product([['a', 'b', 'c'], [1, 2]]))
 print(pd.MultiIndex(levels = [['a', 'b', 'c'], [1, 2]],
                     codes = [[0, 0, 1, 1, 2, 2], [0, 1, 0, 1, 0, 1]]))
+print()
+
+population.index.names = ['행정구역', '년도']
+print(population)
+print()
+
+idx = pd.MultiIndex.from_product([['a', 'b', 'c'], [1, 2]],
+                                 names = ['name1', 'name2'])
+cols = pd.MultiIndex.from_product([['c1', 'c2', 'c3'], [1, 2]],
+                                  names = ['col_names1', 'col_names2'])
+data = np.round(np.random.rand(6, 6), 2)
+print(idx)
+print(cols)
+print(data)
+mdf = pd.DataFrame(data, index = idx, columns = cols)
+print(mdf)
 # =============================================================================
