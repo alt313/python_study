@@ -705,10 +705,6 @@ print()
 # cummin, cummax : 누적 최소값, 누적 최대값
 # mean, median : 평균값, 중앙값
 # mad : 절대 평균 편차
-# quantile : 0부터 1까지의 분위수 계산
-# diff : 1차 산술차 계산
-# pct_change : 퍼센트 변화율 계산
-# corr, cov : 상관관계, 공분산 계산
 df = pd.DataFrame([[1, 1.2, np.nan],
                    [2.4, 5.5, 4.2],
                    [np.nan, np.nan, np.nan],
@@ -768,4 +764,115 @@ print(df)
 print(df.prod())
 print(df.cumprod())
 print()
+
+# diff : 1차 산술차 계산
+print('diff : 1차 산출차 계산')
+print(df)
+print(df.diff())
+print()
+
+# quantile : 0부터 1까지의 분위수 계산
+print('quantile : 0부터 1까지의 분위수 계산')
+print(df)
+print(df.quantile())
+print()
+
+# pct_change : 퍼센트 변화율 계산
+print('pct_change : 퍼센트 변화율 계산')
+print(df)
+print(df.pct_change())
+print()
+
+# corr, cov : 상관관계, 공분산 계산
+print('corr, cov : 상관관계, 공분산 계산')
+print(df)
+print(df.corr())
+print(df.corrwith(df.B))
+print(df.cov())
+print()
+
+# GroupBy 연산
+
+df = pd.DataFrame({'c1' : ['a', 'a', 'b', 'b', 'c', 'd', 'b'],
+                   'c2' : ['A', 'B', 'B', 'A', 'D', 'C', 'C'],
+                   'c3' : np.random.randint(7),
+                   'c4' : np.random.random(7)})
+print(df)
+print(df.dtypes)
+print(df['c3'].groupby(df['c1']).mean())
+print(df['c4'].groupby(df['c2']).std())
+print(df['c4'].groupby([df['c1'], df['c2']]).mean())
+print(df['c4'].groupby([df['c1'], df['c2']]).mean().unstack())
+print(df.groupby('c1').mean())
+print(df.groupby(['c1', 'c2']).mean())
+print()
+
+for c1, group in df.groupby('c1'):
+    print(c1)
+    print(group)
+print()
+    
+for (c1, c2), group in df.groupby(['c1', 'c2']):
+    print((c1, c2))
+    print(group)
+print()
+
+print(df.groupby(['c1', 'c2'])['c4'].mean())
+print(df.groupby('c1')['c3'].quantile())
+print(df.groupby('c1')['c3'].count())
+print(df.groupby('c1')['c4'].median())
+print(df.groupby('c1')['c4'].std())
+print(df.groupby(['c1', 'c2'])['c4'].agg(['mean', 'min', 'max']))
+print(df.groupby(['c1', 'c2'], as_index=False)['c4'].mean())
+print(df.groupby(['c1', 'c2'], group_keys=False)['c4'].mean())
+print()
+
+def top(df, n = 3, column = 'c1'):
+    return df.sort_values(by = column)[-n:]
+print(top(df, n=5))
+print()
+
+print(df.groupby('c1').apply(top))
+print()
+
+# 피벗 테이블
+
+# values : 집계하려는 컬럼 이름 혹은 이름의 리스트. 기본적으로 모든 숫자 컬럼 집계
+# index : 피벗테이블의 로우를 그룹으로 묶을 컬럼 이름이나 그룹 키
+# columns : 피벗테이블의 컬럼을 그룹으로 묶을 컬럼 이름이나 그룹 키
+# dropna : True인 경우 모든 항목이 NA인 컬럼은 포함하지 않음
+print(df.pivot_table(['c3', 'c4'],
+                     index = ['c1'],
+                     columns = ['c2']))
+print()
+
+# margins : 부분합이나 총계를 담기 위한 로우/컬럼 추가 여부. 기본값은 False
+print('margins : 부분합이나 총계를 담기 위한 로우/컬럼 추가 여부. 기본값은 False')
+print(df.pivot_table(['c3', 'c4'],
+                     index = ['c1'],
+                     columns = ['c2'],
+                     margins = True))
+print()
+
+# aggfunc : 집계 함수나 함수 리스트. 기본값으로 mean이 사용
+print('aggfunc : 집계 함수나 함수 리스트. 기본값으로 mean이 사용')
+print(df.pivot_table(['c3', 'c4'],
+                     index = ['c1'],
+                     columns = ['c2'],
+                     margins = True,
+                     aggfunc = sum))
+print()
+
+# fill_value : 결과 테이블에서 누락된 값 대체를 위한 값
+print('fill_value : 결과 테이블에서 누락된 값 대체를 위한 값')
+print(df.pivot_table(['c3', 'c4'],
+                     index = ['c1'],
+                     columns = ['c2'],
+                     margins = True,
+                     fill_value = 0))
+print()
+
+# 범주형 데이터
+
+
 # =============================================================================
