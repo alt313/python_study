@@ -874,5 +874,318 @@ print()
 
 # 범주형 데이터
 
+# add_categories : 기존 카테고리에 새로운 카테고리 추가
+# as_ordered : 카테고리에 순서 지정
+# as_unordered : 카테고리에 순서 미지정
+# remove_categories : 카테고리 제거
+# rename_categories : 카테고리 이름 변경
+# reorder_categories : 새로운 카테고리에 순서 지정
 
+s = pd.Series(['c1', 'c2', 'c1', 'c2', 'c1'] * 2)
+print(s)
+print(pd.unique(s))
+print(pd.value_counts(s))
+print()
+
+code = pd.Series([0, 1, 0, 1, 0] * 2)
+print(code)
+d = pd.Series(['c1', 'c2'])
+print(d)
+print(d.take(code))
+print()
+
+df = pd.DataFrame({'id' : np.arange(len(s)),
+                   'c' : s,
+                   'v' : np.random.randint(1000, 5000, size = len(s))})
+print(df)
+print()
+
+c = df['c'].astype('category')
+print(c)
+print(c.values)
+print(c.values.categories)
+print(c.values.codes)
+print()
+
+df['c'] = c
+print(df.c)
+print()
+
+c = pd.Categorical(['c1', 'c2', 'c3', 'c1', 'c2'])
+print(c)
+print()
+
+categories = ['c1', 'c2', 'c3']
+codes = [0, 1, 2, 0, 1]
+c = pd.Categorical.from_codes(codes, categories)
+print(c)
+print(pd.Categorical.from_codes(codes, categories, ordered = True))
+print(c.as_ordered())
+print(c.codes)
+print(c.categories)
+print()
+
+# set_categories : 새로운 카테고리로 변경
+print('set_categories : 새로운 카테고리로 변경')
+c = c.set_categories(['c1', 'c2', 'c3', 'c4', 'c5'])
+print(c.categories)
+print(c.value_counts())
+print(c[c.isin(['c1', 'c3'])])
+print()
+
+# remove_unused_categories :사용안하는 카테고리 제거
+print('remove_unused_categories :사용안하는 카테고리 제거')
+c = c.remove_unused_categories()
+print(c.categories)
+print()
+# =============================================================================
+
+
+
+
+
+# 문자열 연산
+# =============================================================================
+
+# 문자열 연산자
+
+name_tuple = [ 'Suan Lee', 'Steven Jobs', 'Larry Page', 'Elon Musk', None, 'Mark Zuckerberg', 'Jeff Bezos']
+names = pd.Series(name_tuple)
+print(names)
+print()
+
+# lower() : 모든 대소문자가 소문자로 변환된 문자열을 반환
+print('lower() : 모든 대소문자가 소문자로 변환된 문자열을 반환')
+print(names.str.lower())
+print()
+
+print(names.str.len())
+print(names.str.split())
+print()
+
+# 기타 연산자
+
+# slice() : 각 요소에 슬라이스 적용
+# slice_replace() : 각 요소의 슬라이스를 특정 값으로 대체
+# cat() : 문자열 연결
+# normalize() : 문자열의 유니코드 형태로 반환
+# pad() : 문자열의 왼쪽, 오른쪽, 또는 양쪽 공백 추가
+# wrap() : 긴 문자열을 주어진 너비보다 짧은 길이의 여러 줄로 나눔
+# get_dummies() : DataFrame으로 가변수 추출
+print(names.str[0:4])
+print()
+
+# get() : 각 요소에 인덱스 지정
+print('get() : 각 요소에 인덱스 지정')
+print(names.str.split().str.get(-1))
+print()
+
+# repeat() : 값 반복
+print('repeat() : 값 반복')
+print(names.str.repeat(2))
+print()
+
+# join() : Series의 각 요소에 있는 문자열을 전달된 구분자와 결합
+print('join() : Series의 각 요소에 있는 문자열을 전달된 구분자와 결합')
+print(names.str.join('*'))
+print()
+
+# 정규표현식
+
+# extract() : 각 요소에.re.match()호출. 문자열로 매칭된 그룹 반환
+# replace() : 패턴이 발생한 곳을 다른 문자열로 대체
+# contains() : 각 요소에 re.search()호출. 불리언 값 반환
+# count() : 패턴 발생 건수 집계
+# split() : str.split()과 동일하지만 정규표현식 사용
+# rsplit() : str.rsplit()과 동일하지만 정규표현식 사용
+
+# match() : 각 요소에 re.match()호출. 불리언 값 반환
+print('match() : 각 요소에 re.match()호출. 불리언 값 반환')
+print(names.str.match('([A-Za-z]+)'))
+print()
+
+# findall() : 각 요소에 re.findall()호출. 
+print('findall() : 각 요소에 re.findall()호출. ')
+names.str.findall('([A-Za-z]+)')
+print()
+# =============================================================================
+
+
+
+
+# 시계열 처리
+# =============================================================================
+idx = pd.DatetimeIndex(['2019-01-01', '2020-01-01', '2020-02-01', '2020-02-02', '2020-03-01'])
+s = pd.Series([0, 1, 2, 3, 4], index = idx)
+print(s)
+print(s['2020-01-01':])
+print(s[:'2020-01-01'])
+print(s['2019'])
+
+# 시계열 데이터 구조
+
+from datetime import datetime
+dates = pd.to_datetime(['12-12-2019', datetime(2020, 1, 1), '2nd of Feb, 2020', '2020-Mar-4', '20200701'])
+print(dates)
+print(dates.to_period('D'))
+print(dates - dates[0])
+print(pd.date_range('2020-01-01', '2020-07-01'))
+print(pd.date_range('2020-01-01', periods = 7)) # periods=n: n개 출력
+print(pd.date_range('2020-01-01', periods = 7, freq = 'M')) # freq='M': 월단위 말일 출력
+print(pd.date_range('2020-01-01', periods = 7, freq = 'H')) # freq='H': 시간단위 출력
+print()
+
+idx = pd.to_datetime(['2020-01-01 12:00:00', '2020-01-02 00:00:00'] + [None])
+print(idx)
+print(idx[2])
+print(pd.isnull(idx))
+print()
+
+# 시계열 기본
+
+dates = [datetime(2020, 1, 1), datetime(2020, 1, 2), datetime(2020, 1, 4), datetime(2020, 1, 7),
+         datetime(2020, 1, 10), datetime(2020, 1, 11), datetime(2020, 1, 15)]
+print(dates)
+ts = pd.Series(np.random.randn(7), index = dates)
+print(ts)
+print(ts.index)
+print(ts.index[0])
+print(ts[ts.index[2]])
+print(ts['20200104'])
+print(ts['1/4/2020'])
+print()
+
+ts = pd.Series(np.random.randn(1000),
+               index = pd.date_range('2017-10-01', periods = 1000))
+print(ts)
+print(ts['2020']) # 2020년에 해당하는 것만 출력
+print(ts['2020-06']) # 2020년 06월 해당하는 것만 출력
+print(ts[datetime(2020, 6, 20):])
+print(ts['2020-06-10':'2020-06-20'])
+print()
+
+tdf = pd.DataFrame(np.random.randn(1000, 4), # 1000개, 4개의 컬럼
+                   index = pd.date_range('2017-10-01', periods = 1000),
+                   columns = ['A', 'B', 'C', 'D'],)
+print(tdf)
+print(tdf['2020'])
+print(tdf.loc['2020-06'])
+print(tdf['2020-06-20':])
+print(tdf['C'])
+print()
+
+ts = pd.Series(np.random.randn(10),
+               index = pd.DatetimeIndex(['2020-01-01', '2020-01-01', '2020-01-02', '2020-01-02', '2020-01-03',
+                                         '2020-01-04', '2020-01-05', '2020-01-05', '2020-01-06', '2020-01-07']))
+print(ts)
+print(ts.index.is_unique) # 인덱스가 유니크한지 유니크하지 않으면 False
+print(ts['2020-01-01'])
+print(ts.groupby(level = 0).mean())
+print(pd.date_range('2020-01-01', '2020-07-01'))
+print(pd.date_range(start = '2020-01-01', periods = 10))
+print(pd.date_range(end = '2020-07-01', periods = 10))
+print(pd.date_range('2020-07-01', '2020-07-7', freq = 'B')) # freq='B': 주말제외 영업일만 출력
+print()
+
+# 주기와 오프셋
+
+# freq='H', 'T', 'B', 'S': 시간단위 출력, 분단위 출력, 영업가능일(평일) 출력, 초단위 출력
+print("freq='H', 'T', 'B', 'S': 시간단위 출력, 분단위 출력, 영업가능일(평일) 출력, 초단위 출력")
+print(pd.timedelta_range(0, periods = 12, freq = 'H')) 
+print(pd.timedelta_range(0, periods = 60, freq = 'T'))
+print(pd.timedelta_range(0, periods = 10, freq = '1H30T')) # 1시간 30분 단위 출력
+print(pd.date_range('2020-01-01', periods = 20, freq = 'B'))
+print(pd.date_range('2020-01-01', periods = 30, freq = '2H'))
+print(pd.date_range('2020-01-01', periods = 20, freq = 'S'))
+
+# 시프트
+
+ts = pd.Series(np.random.randn(5),
+               index = pd.date_range('2020-01-01', periods = 5, freq = 'B'))
+print(ts)
+print(ts.shift(1))
+print(ts.shift(3))
+print(ts.shift(-2))
+print(ts.shift(3, freq = 'B'))
+print(ts.shift(2, freq = 'W'))
+print()
+
+# 시간대 처리
+
+# 국제 표준시를 기준으로 떨어진 거리만큼 오프셋으로 시간대 처리
+# 전 세계의 시간대 정보를 모아놓은 올슨 데이터베이스를 활용한 라이브러리인 pytz사용
+import pytz
+
+print(pytz.common_timezones)
+tz = pytz.timezone('Asia/Seoul')
+dinx = pd.date_range('2020-01-01 09:00', periods = 7, freq = 'B')
+ts = pd.Series(np.random.randn(len(dinx)), index = dinx)
+print(ts)
+print()
+
+print(pd.date_range('2020-01-01 09:00', periods = 7, freq = 'B', tz = 'UTC'))
+print()
+
+ts_utc = ts.tz_localize('UTC')
+print(ts_utc)
+print(ts_utc.index)
+print(ts_utc.tz_convert('Asia/Seoul'))
+print()
+
+ts_seoul = ts.tz_localize('Asia/seoul')
+print(ts_seoul)
+print(ts_seoul.tz_convert('UTC'))
+print(ts_seoul.tz_convert('Europe/Berlin'))
+print(ts.index.tz_localize('America/New_York'))
+print()
+
+stamp = pd.Timestamp('2020-01-01 12:00')
+stamp_utc = stamp.tz_localize('UTC')
+print(stamp_utc)
+print(stamp_utc.value)
+print(stamp_utc.tz_convert('Asia/Seoul'))
+print(stamp_utc.tz_convert('Asia/Seoul').value)
+print()
+
+stamp_ny = pd.Timestamp('2020-01-01 12:00', tz = 'America/New_York')
+print(stamp_ny)
+print(stamp_utc.value)
+print(stamp_ny.value)
+print(stamp_utc.tz_convert('Asia/Shanghai'))
+print()
+
+stamp = pd.Timestamp('2020-01-01 12:00', tz = 'Asia/Seoul')
+print(stamp)
+from pandas.tseries.offsets import Hour
+print(stamp + Hour())
+print(stamp + 3 * Hour())
+print()
+
+ts1 = ts_utc[:5].tz_convert('Europe/Berlin')
+ts2 = ts_utc[2:].tz_convert('America/New_York')
+print(ts1)
+print(ts2)
+ts = ts1 + ts2
+print(ts.index) # 결과는 UTC로 나온다
+print()
+
+# 기간과 기간 연산
+
+p = pd.Period(2020, freq = 'A-JAN')
+print(p)
+print(p + 2)
+print(p - 3)
+print()
+
+p1 = pd.Period(2010, freq = 'A-JAN')
+p2 = pd.Period(2020, freq = 'A-JAN')
+print(p2 - p1)
+print()
+
+pr = pd.period_range('2020-01-01', '2020-06-30', freq = 'M')
+print(pd.Series(np.random.randn(6), index = pr))
+print()
+
+pidx = pd.PeriodIndex(['2020-1', '2020-2', '2020-4'], freq = 'M')
+print(pidx)
 # =============================================================================
