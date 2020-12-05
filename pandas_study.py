@@ -1188,4 +1188,162 @@ print()
 
 pidx = pd.PeriodIndex(['2020-1', '2020-2', '2020-4'], freq = 'M')
 print(pidx)
+print()
+
+p = pd.Period('2020', freq = 'A-FEB')
+print(p)
+print(p.asfreq('M', how = 'start'))
+print(p.asfreq('M', how = 'end'))
+print()
+
+p = pd.Period('2020', freq = 'A-OCT')
+print(p)
+print(p.asfreq('M', how = 'start'))
+print(p.asfreq('M', how = 'end'))
+print()
+
+pr = pd.period_range('2010', '2020', freq = 'A-JAN')
+ts = pd.Series(np.random.randn(len(pr)), index = pr)
+print(ts)
+print(ts.asfreq('M', how = 'start'))
+print(ts.asfreq('B', how = 'end'))  
+print()
+
+p = pd.Period('2020Q2', freq = 'Q-JAN')
+print(p)
+print(p.asfreq('D', how = 'start'))
+print(p.asfreq('D', how = 'end'))
+print()
+
+pr = pd.period_range('2019Q3', '2020Q3', freq = 'Q-JAN')
+ts = pd.Series(np.arange(len(pr)), index = pr)
+print(ts)
+print()
+
+pr = pd.date_range('2020-01-01', periods = 5, freq = 'Q-JAN')
+ts = pd.Series(np.random.randn(5), index = pr)
+print(ts)
+print(ts.to_period())
+print()
+
+pr = pd.date_range('2020-01-01', periods = 5, freq = 'D')
+ts = pd.Series(np.random.randn(5), index = pr)
+print(ts)
+print(ts.to_period('M'))
+print(ts.to_period('M').to_timestamp(how = 'start'))
+print()
+
+# 리샘플링
+
+# freq : 리샘플링 빈도
+# axis : 리샘플링 축
+# fill_method : 업샘플링시 보간 수행
+# limit : 보간법을 사용할 때 보간을 적용할 최대 기간
+# convention : 기간을 리샘플링할 떄 하위 빈도 기간에서 상위 빈도로 변환 시 방식
+
+# kind : 기간또는 타임스탬프집계 구분
+print('kind : 기간또는 타임스탬프집계 구분')
+dr = pd.date_range('2020-01-01', periods = 200, freq = 'D')
+ts = pd.Series(np.random.randn(len(dr)), index = dr)
+print(ts)
+print(ts.resample('M').mean())
+print(ts.resample('M', kind = 'period').mean())
+print()
+
+# closed : 다운샘플링 시 각 간격의 포함 위치
+print('closed : 다운샘플링 시 각 간격의 포함 위치')
+dr = pd.date_range('2020-01-01', periods = 10, freq = 'T')
+ts = pd.Series(np.arange(10), index = dr)
+print(ts)
+print(ts.resample('2T', closed = 'left').sum())
+print(ts.resample('2T', closed = 'right').sum())
+print()
+
+# label : 다운샘플링 시 집계된 결과 라벨 결정
+print('label : 다운샘플링 시 집계된 결과 라벨 결정')
+print(ts.resample('2T', closed = 'right', label = 'right').sum())
+print()
+
+# loffset : 나뉜 그룹의 라벨을 맞추기 위한 오프셋
+print('loffset : 나뉜 그룹의 라벨을 맞추기 위한 오프셋')
+print(ts.resample('2T', closed = 'right', label = 'right', loffset = '-1s').sum())
+print()
+
+df = pd.DataFrame(np.random.randn(10, 4),
+                  index = pd.date_range('2019-10-01', periods = 10, freq = 'M'),
+                  columns = (['C1', 'C2', 'C3', 'C4']))
+print(df)
+print(df.resample('Y').asfreq())
+print(df.resample('W-FRI').asfreq())
+print(df.resample('H').asfreq())
+print(df.resample('H').ffill())
+print(df.resample('Q-DEC').mean())
+print(df.resample('Y').mean())
+
+# 무빙 윈도우
+
+df = pd.DataFrame(np.random.randn(300, 4),
+                  index = pd.date_range('2020-01-01', periods = 300, freq = 'D'),
+                  columns = ['C1', 'C2', 'C3', 'C4'])
+print(df)
+print(df.rolling(30).mean())
+df.rolling(30).mean().plot()
+df.rolling(60).mean().plot()
+df.C1.rolling(60, min_periods = 10).std().plot()
+df.rolling(60, min_periods = 10).std()[10:50].plot()
+df.rolling(60, min_periods = 10).std().expanding().mean().plot()
+df.rolling(60).mean().plot(logy = True)
+df.rolling('20D').mean().plot()
+df['C1'].rolling(30, min_periods = 20).mean().plot(style = '--', label = 'Semple MA')
+df['C1'].ewm(span = 30).mean().plot(style = '-', label = 'EWMA')
+df['C1'].rolling(100, min_periods = 50).corr(df['C3']).plot()
+df['C2'].rolling(100, min_periods = 50).corr(df['C4']).plot()
+# =============================================================================
+
+ 
+
+
+# 데이터 읽기 및 저장
+# =============================================================================
+
+# read_clipboard : 클립보드에 있는 데이터 읽기, 웹페이지에 있는 표를 읽어올 때 유용
+# read_excel : 엑셀 파일에서 표 형식 데이터 열기
+# read_html : HTML문서 내의 모든 테이블 데이터 읽기
+# read_json : JSON에서 데이터 읽기
+# read_sas : SAS시스템의 사용자 정의 저장 포맷 데이터 읽기
+# read_sql : SQL 질의 결과를 DataFrame형식으로 읽기
+
+# 텍스트 파일 읽기/쓰기
+
+
+
+# read_csv : 파일URL, 객체로부터 구분된 데이터 읽기(기본구분자 : ,)
+# %%writefile example1.csv
+# a, b, c, d, e, text
+# 1, 2, 3, 4, 5, hi
+# 6, 7, 8, 9, 10, pandas
+# 11, 12, 13, 14, 15, csv
+# 파이참에서는 안됨
+print('read_csv : 파일URL, 객체로부터 구분된 데이터 읽기(기본구분자 : ,)')
+print(pd.read_csv('example1.csv'))
+print()
+
+# %%writefile example2.csv
+# 1, 2, 3, 4, 5, hi
+# 6, 7, 8, 9, 10, pandas
+# 11, 12, 13, 14, 15, csv
+print(pd.read_csv('example2.csv', header = None))
+print(pd.read_csv('example2.csv', names = ['a', 'b', 'c', 'd', 'e', 'text']))
+print(pd.read_csv('example2.csv', names = ['a', 'b', 'c', 'd', 'e', 'text'], index_col = 'text'))
+print()
+
+# read_table : 파일URL, 객체로부터 구분된 데이터 읽기(기본구분자 : \t)
+print('read_table : 파일URL, 객체로부터 구분된 데이터 읽기(기본구분자 : \t)')
+# %%writefile example3.txt
+#       a     b     c
+# 1   0.1   0.2   0.3
+# 2   0.4   0.5   0.6
+# 3   0.7   0.8   0.9
+print(pd.read_table('example3.txt', sep='\s+'))
+
 # =============================================================================
