@@ -1307,9 +1307,7 @@ df['C2'].rolling(100, min_periods = 50).corr(df['C4']).plot()
 # =============================================================================
 
 # read_clipboard : 클립보드에 있는 데이터 읽기, 웹페이지에 있는 표를 읽어올 때 유용
-# read_excel : 엑셀 파일에서 표 형식 데이터 열기
 # read_html : HTML문서 내의 모든 테이블 데이터 읽기
-# read_json : JSON에서 데이터 읽기
 # read_sas : SAS시스템의 사용자 정의 저장 포맷 데이터 읽기
 # read_sql : SQL 질의 결과를 DataFrame형식으로 읽기
 
@@ -1345,5 +1343,206 @@ print('read_table : 파일URL, 객체로부터 구분된 데이터 읽기(기본
 # 2   0.4   0.5   0.6
 # 3   0.7   0.8   0.9
 print(pd.read_table('example3.txt', sep='\s+'))
+print()
 
+# %%writefile example4.csv
+# # 파일 설명
+# a, b, c, d, e, text
+# # 컬럼은 a, b, c, d, e와 text가 있음
+# 1, 2, 3, 4, 5, hi
+# 6, 7, 8, 9, 10, pandas
+# 11, 12, 13, 14, 15, csv
+print(pd.read_csv('example4.csv', skiprows = [0, 4]))
+print()
+
+# %%writefile example5.csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+pd.read_csv('example5.csv')
+print()
+
+# %%writefile example6.csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+# a, b, c, d, e, text
+# 1, 2, NA, 4, 5, hi
+# 6, 7, 8, NULL, 10, pandas
+# 11, NA, 13, 14, 15, csv
+print(pd.read_csv('example6.csv', nrows = 5))
+df = pd.read_csv('example6.csv')
+print(df)
+df.to_csv('output.csv')
+print()
+
+dr = pd.date_range('2020-01-01', periods = 10)
+ts = pd.Series(np.arange(10), index = dr)
+print(ts)
+ts.to_csv('ts.csv', header = ['value'])
+print(pd.read_csv('ts.csv'))
+print()
+
+ # read_json : JSON에서 데이터 읽기
+ print('read_json : JSON에서 데이터 읽기')
+   # %%writefile example.json
+   # [{"a" : 1, "b": 2, "c": 3, "d" : 4, "e" : 5},
+   #  {"a" : 6, "b": 7, "c": 8, "d" : 9, "e" : 10},
+   #  {"a" : 11, "b": 12, "c": 13, "d" : 14, "e" : 15}]
+print(pd.read_json('example.json'))
+# ts.to_json('output.json')
+# pd.read_json('output.json')
+df.to_json('output.json')
+pd.read_json('output.json')
+print()
+
+# 이진 데이터 파일 읽기/쓰기
+
+df = pd.read_csv('example1.csv')
+print(df)
+df.to_pickle('df_pickle')
+pd.read_pickle('df_pickle')
+print()
+
+# read_hdf : Pandas에서 저장한 HDFS파일의 데이터 읽기
+print('read_hdf : Pandas에서 저장한 HDFS파일의 데이터 읽기')
+df = pd.DataFrame({'a': np.random.randn(100),
+                   'b': np.random.randn(100),
+                   'c': np.random.randn(100)})
+print(df)
+h = pd.HDFStore('date.h5')
+h['obj1'] = df
+h['obj1_col1'] = df['a']
+h['obj1_col2'] = df['b']
+h['obj1_col3'] = df['c']
+print(h)
+print(h['obj1'])
+h.put('obj2', df, format = 'table')
+h.select('obj2', where = ['index > 50 and index <= 60'])
+h.close()
+df.to_hdf('data.h5', 'obj3', format = 'table')
+pd.read_hdf('data.h5', 'obj3', where = ['index < 10'])
+print()
+
+# read_excel : 엑셀 파일에서 표 형식 데이터 열기
+print('read_excel : 엑셀 파일에서 표 형식 데이터 열기')
+df.to_excel('example.xlsx', 'Sheet1')
+print(pd.read_excel('example.xlsx', 'Sheet1'))
+# =============================================================================
+
+
+
+# 데이터 정제
+# =============================================================================
+
+# 누락값 처리
+
+# 대부분의 실제 데이터들은 정제되지 않고 누락값들이 존재
+# 서로 다른 데이터들은 다른 형태의 결측을 가짐
+# 결측 데이터는 null, NaN, NA로 표기
+
+# None : 파이썬 누락 데이터
+print('None : 파이썬 누락 데이터')
+a = np.array([1, 2, None, 4, 5])
+print(a)
+# print(a.sum()) # 집계불가
+print()
+
+# NaN : 누락된 수치 데이터
+print('NaN : 누락된 수치 데이터')
+a = np.array([1, 2, np.nan, 4, 5])
+print(a)
+print(a.sum(), a.min(), a.max())
+print(np.nansum(a), np.nanmin(a), np.nanmax(a))
+print(pd.Series([1, 2, np.nan, 4, None]))
+print()
+
+s = pd.Series(range(5), dtype = int)
+print(s)
+s[0] = None
+print(s)
+s[3] = np.nan
+print(s)
+print()
+
+s = pd.Series([True, False, None, np.nan])
+print(s)
+
+# Null값 처리
+
+# isnull : 누락되거나 NA인 값을 불리언 값으로 반환
+print('isnull : 누락되거나 NA인 값을 불리언 값으로 반환')
+s = pd.Series([1, 2, np.nan, 'String', None])
+print(s)
+print(s[s.isnull()])
+print()
+
+# notnull() : isnull()의 반대
+print('notnull() : isnull()의 반대')
+print(s[s.notnull()])
+print()
+
+# dropna() : 누락된 데이터가 있는 축 제외
+print('dropna() : 누락된 데이터가 있는 축 제외')
+print(s.dropna())
+print()
+
+df[3] = np.nan
+print(df)
+print(df.dropna(axis = 'columns', how = 'all'))
+print(df.dropna(axis = 'rows', thresh = 3))
+print()
+
+# fillna() : 누락된 값을 대체하거나 ffill이나 bfill로 보간 메서드 적용
+print('fillna() : 누락된 값을 대체하거나 ffill이나 bfill로 보간 메서드 적용')
+print(s.fillna(0))
+print(s.fillna(method = 'ffill'))
+print(s.fillna(method = 'bfill'))
+print()
+
+print(df)
+print(df.fillna(method = 'ffill', axis = 0))
+print(df.fillna(method = 'ffill', axis = 1))
+print(df.fillna(method = 'bfill', axis = 0))
+print(df.fillna(method = 'bfill', axis = 1))
+
+# 중복 제거
+
+df = pd.DataFrame({'c1' : ['a', 'b', 'c'] * 2 + ['b'] + ['c'],
+                   'c2' : [1, 2, 1, 1, 2, 3, 3, 4]})
+print(df)
+print(df.duplicated())
+print(df.drop_duplicates())
+
+# 값 치환
+
+s = pd.Series([1., 2., -999., 3., -1000., 4.])
+print(s)
+print(s.replace(-999, np.nan))
+print(s.replace([-999, -1000], np.nan))
+print(s.replace([-999, -1000], [np.nan, 0]))
+# =============================================================================
+
+
+
+
+# 참고문헌
+# =============================================================================
+
+# https://pandas.pydata.org
+print('https://pandas.pydata.org')
 # =============================================================================
