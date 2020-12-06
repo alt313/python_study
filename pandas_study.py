@@ -1397,8 +1397,8 @@ ts.to_csv('ts.csv', header = ['value'])
 print(pd.read_csv('ts.csv'))
 print()
 
- # read_json : JSON에서 데이터 읽기
- print('read_json : JSON에서 데이터 읽기')
+# read_json : JSON에서 데이터 읽기
+print('read_json : JSON에서 데이터 읽기')
    # %%writefile example.json
    # [{"a" : 1, "b": 2, "c": 3, "d" : 4, "e" : 5},
    #  {"a" : 6, "b": 7, "c": 8, "d" : 9, "e" : 10},
@@ -1535,6 +1535,7 @@ print(s)
 print(s.replace(-999, np.nan))
 print(s.replace([-999, -1000], np.nan))
 print(s.replace([-999, -1000], [np.nan, 0]))
+print()
 # =============================================================================
 
 
