@@ -331,6 +331,7 @@ iphone_df8.drop(['iPhone 7', 'iPhone 8', 'iPhone X'], axis = 'index', inplace = 
 print(iphone_df8)
 print()
 
+
 # 키와 몸무게가 담겨있는 DataFrame이 있다. 아래 3가지만 수정
 print('키와 몸무게가 담겨있는 DataFrame이 있다. 아래 3가지만 수정')
 body_imperial_df = pd.read_csv('body_imperial1.csv', index_col = 0)
@@ -353,6 +354,7 @@ body_imperial_df.loc[20,:] = [70, 200]
 print(body_imperial_df)
 print()
 
+
 # 키와 몸무게가 담겨있는 DataFrame이 있다. 아래 2가지만 수정
 print('키와 몸무게가 담겨있는 DataFrame이 있다. 아래 2가지만 수정')
 body_imperial_df2 = pd.read_csv('body_imperial2.csv', index_col = 0)
@@ -369,6 +371,7 @@ body_imperial_df2.loc[:10, 'Gender'] = 'Male'
 body_imperial_df2.loc[11:, 'Gender'] = 'Female'
 print(body_imperial_df2)
 print()
+
 
 # index/column 설정하기
 print('index/column 설정하기')
@@ -395,6 +398,7 @@ print(liverpool_df.set_index('Number', inplace = True))
 print(liverpool_df)
 print()
 
+
 # 토익 각 파트 최소 250점, 총점수 600점이 되어야 서류전형을 합격할수 있다.
 # 합격 여부 컬럼 생성후 합격은 True, 불합격은 False를 넣어라
 print('''토익 각 파트 최소 250점, 총점수 600점이 되어야 서류전형을 합격할수 있다.
@@ -417,6 +421,7 @@ puzzle_df.loc[2, 'F'] = 99
 print(puzzle_df)
 print()
 
+
 # 큰 DataFrame 살펴보기
 print('큰 DataFrame 살펴보기')
 laptops_df = pd.read_csv('laptops.csv')
@@ -434,6 +439,7 @@ print(laptops_df.sort_values(by = 'price')) # 옵션을 아무거도 안쓰면 �
 print(laptops_df.sort_values(by = 'price', ascending = False)) # 내림차순
 print()
 
+
 # 큰 Series 살펴보기
 print('큰 Series 살펴보기')
 laptops_df2 = pd.read_csv('laptops.csv')
@@ -442,6 +448,7 @@ print(laptops_df2['brand'].unique()) # 중복된 브랜드 제거
 print(laptops_df2['brand'].value_counts()) # 각 브랜드별로 몇개씩 들어있는지 출력
 print(laptops_df2['brand'].describe()) # 브랜드 컬럼 통계정보
 print()
+
 
 # 여행지 선정하기1
 print('여행지 선정하기1')
@@ -470,6 +477,7 @@ world_cities_df['인구밀도'] = world_cities_df['Population'] / world_cities_d
 print(world_cities_df.sort_values(by = '인구밀도', ascending = False))
 print()
 
+
 # 여행지 선정하기2
 print('여행지 선정하기2')
 world_cities_df2 = pd.read_csv('world_cities2.csv', index_col = 0)
@@ -481,10 +489,10 @@ print(world_cities_df2['Country'].value_counts()[world_cities_df2['Country'].val
 # country[country == 4]
 print()
 
+
 # 수강신청 준비하기 (다른방법으로 다시해보기)
 print('수강신청 준비하기')
 # 수강신청에는 다음 3개의 조건이 있다.
-
 # 1. “information technology” 과목은 심화과목이라 1학년은 수강할 수 없습니다.
 # 2. “commerce” 과목은 기초과목이고 많은 학생들이 듣는 수업이라 4학년은 수강할 수 없습니다.
 # 3. 수강생이 5명이 되지 않으면 강의는 폐강되어 수강할 수 없습니다.
@@ -516,6 +524,101 @@ for i in enrolment_df['course name'].values:
         cnt_5.append(False)
 
 cnt_5
+# True면 수강신청 못함
 
 enrolment_df['status'] = np.where(cnt_5, 'not allowed', np.where(cnt_1 | cnt_4, 'not allowed', 'allowed'))
-enrolment_df
+print(enrolment_df)
+print()
+
+
+# 강의실 배정하기1
+print('강의실 배정하기1')
+
+# 강의실은 규모에 따라 “Auditorium”, “Large room”, “Medium room”, “Small room” 총 4가지 종류가 있다.
+# 1. 80명 이상의 학생이 수강하는 과목은 “Auditorium”에서 진행
+# 2. 40명 이상, 80명 미만의 학생이 수강하는 과목은 “Large room”에서 진행
+# 3. 15명 이상, 40명 미만의 학생이 수강하는 과목은 “Medium room”에서 진행
+# 4. 5명 이상, 15명 미만의 학생이 수강하는 과목은 “Small room”에서 진행
+# 5. 폐강 등의 이유로 status가 “not allowed”인 수강생은 room assignment 또한 “not assigned”가 되어야 한다.
+enrolment_df2 = pd.read_csv('enrolment_2.csv')
+enrolment_df2
+enrolment_df2['room assignment'] = 'not assigned'
+
+course_cnt = enrolment_df2['course name'].value_counts()
+
+list_80 = list(course_cnt[course_cnt >= 80].index)
+list_40 = list(course_cnt[(course_cnt >= 40) & (course_cnt < 80)].index)
+list_15 = list(course_cnt[(course_cnt >= 15) & (course_cnt < 40)].index)
+list_5 = list(course_cnt[(course_cnt >= 5) & (course_cnt < 15)].index)
+
+cnt = 0
+for i in enrolment_df2['course name']:
+    if i in list_80:
+        enrolment_df2['room assignment'][cnt] = 'Auditorium'
+    elif i in list_40:
+        enrolment_df2['room assignment'][cnt] = 'Large room'
+    elif i in list_15:
+        enrolment_df2['room assignment'][cnt] = 'Medium room'
+    elif i in list_5:
+        enrolment_df2['room assignment'][cnt] = 'Small room'
+    else:
+        enrolment_df2['room assignment'][cnt] = 'not assigned'
+    cnt += 1
+    
+enrolment_df2.loc[enrolment_df2['status'] == 'not allowed', 'room assignment'] = 'not assigned'
+print(enrolment_df2)
+
+# 강의실 배정하기2
+print('강의실 배정하기2')
+enrolment_df3 = pd.read_csv('enrolment_3.csv')
+
+# 아래 세 가지 조건을 만족하도록 코드를 작성
+# 1. 같은 크기의 강의실이 필요한 과목에 대해 알파벳 순서대로 방 번호를 배정하세요.
+#    예를 들어 Auditorium이 필요한 과목으로 “arts”, “commerce”, “science” 세 과목이 있다면, 
+#    “arts”는 “Auditorium-1”, “commerce”는 “Auditorium-2”, “science”는 “Auditorium-3” 
+#    순서로 방 배정이 되어야 한다.
+# 2. “status” column이 “not allowed”인 수강생은 “room assignment” column을 그대로 “not assigned”로 남겨둡니다.
+# 3. “room assignment” column의 이름을 “room number”로 바꿔주세요.
+
+enrolment_df3.rename(columns = {'room assignment' : 'room number'}, inplace = True)
+enrolment_df3['room number'].unique()
+
+course_list = list(enrolment_df3['course name'].value_counts().index)
+
+Auditorium = enrolment_df3.loc[enrolment_df3['room number'] == 'Auditorium', 'course name'].value_counts()
+Large = enrolment_df3.loc[enrolment_df3['room number'] == 'Large room', 'course name'].value_counts()
+Medium = enrolment_df3.loc[enrolment_df3['room number'] == 'Medium room', 'course name'].value_counts()
+Small = enrolment_df3.loc[enrolment_df3['room number'] == 'Small room', 'course name'].value_counts()
+
+list_1 = list(Auditorium.index.sort_values())
+list_2 = list(Large.index.sort_values())
+list_3 = list(Medium.index.sort_values())
+list_4 = list(Small.index.sort_values())
+
+
+# enrolment_df3.loc[enrolment_df3['course name'] == 'arts', 'room number']
+# f'Auditorium-{num}'
+
+num = 1
+for i in list_1:
+    enrolment_df3.loc[enrolment_df3['course name'] == i, 'room number'] = f'Auditorium-{num}'
+    num += 1
+
+num = 1
+for i in list_2:
+    enrolment_df3.loc[enrolment_df3['course name'] == i, 'room number'] = f'Large-{num}'
+    num += 1
+
+num = 1
+list_3
+for i in list_3:
+    enrolment_df3.loc[enrolment_df3['course name'] == i, 'room number'] = f'Medium-{num}'
+    num += 1
+
+num = 1
+for i in list_4:
+    enrolment_df3.loc[enrolment_df3['course name'] == i, 'room number'] = f'Small-{num}'
+    num += 1
+
+enrolment_df3.loc[enrolment_df3['status'] == 'not allowed', 'room number'] = 'not assigned'
+print(enrolment_df3)
