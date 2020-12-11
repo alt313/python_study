@@ -595,7 +595,6 @@ list_2 = list(Large.index.sort_values())
 list_3 = list(Medium.index.sort_values())
 list_4 = list(Small.index.sort_values())
 
-
 # enrolment_df3.loc[enrolment_df3['course name'] == 'arts', 'room number']
 # f'Auditorium-{num}'
 
@@ -622,3 +621,429 @@ for i in list_4:
 
 enrolment_df3.loc[enrolment_df3['status'] == 'not allowed', 'room number'] = 'not assigned'
 print(enrolment_df3)
+print()
+
+
+
+
+
+
+# 데이터 분석과 시각화
+# =============================================================================
+# 시각화의 두 가지 목적
+
+# 분석에 도움이 된다.
+# 리포팅에 도움이 된다.
+
+# 선 그래프
+print('선 그래프')
+# import matplotlib as mlt
+
+broadcast_df7 = pd.read_csv('broadcast.csv', index_col = 0)
+broadcast_df7.plot(kind = 'line') 
+# 아무것도 입력하지 않으면 제일 기본값으로 선그래프(line) 출력
+broadcast_df7.plot(y = 'KBS')
+broadcast_df7.plot(y = ['KBS', 'JTBC'])
+broadcast_df7
+print()
+
+# 한국, 미국, 영국, 독일, 중국, 일본의 GDP그래프를 출력
+print('한국, 미국, 영국, 독일, 중국, 일본의 GDP그래프를 출력')
+gdp_df = pd.read_csv('gdp.csv', index_col = 0)
+
+from_nm = pd.Series(gdp_df.columns)
+from_nm[from_nm.str.startswith('U')]
+
+gdp_df[['Korea_Rep', 'United_States', 'United_Kingdom', 'Germany', 'China', 'Japan']].plot()
+gdp_df.plot(y = ['Korea_Rep', 'United_States', 'United_Kingdom', 'Germany', 'China', 'Japan'])
+# 순서대로 한국, 미국. 영국. 독일, 중국, 일본이다
+print()
+
+# 막대 그래프
+print('막대 그래프')
+sports_df = pd.read_csv('sports.csv', index_col = 0)
+sports_df
+sports_df.plot() # 기본은 선그래프
+sports_df.plot(kind = 'bar') # 막대 그래프 
+sports_df.plot(kind = 'barh') # 가로 막대 그래프
+sports_df.plot(kind = 'bar', stacked = True) # 쌓여지는 막대그래프
+sports_df['Female'].plot(kind = 'bar')
+print()
+
+# 실리콘 밸리에서 일하는 남자 관리자 (Managers)에 대한 인종 분포를 막대 그래프 출력
+print('실리콘 밸리에서 일하는 남자 관리자 (Managers)에 대한 인종 분포를 막대 그래프 출력')
+silicon_valley_summary_df = pd.read_csv('silicon_valley_summary.csv')
+managers = silicon_valley_summary_df[silicon_valley_summary_df['job_category'] == 'Managers']
+managers_male = managers[managers['gender'] == 'Male']
+managers_male.iloc[:4, :].plot(x = 'race_ethnicity', y = 'count', kind = 'bar')
+print()
+
+# 파이 그래프
+print('파이 그래프')
+# 절대적인 수치보다 비율을 표기
+broadcast_df8 = pd.read_csv('broadcast.csv', index_col = 0)
+broadcast_df8.loc[2017].plot(kind = 'pie')
+print()
+
+# 어도비 전체 직원들의 직군 분포를 파이 그래프로 출력
+print('어도비 전체 직원들의 직군 분포를 파이 그래프로 출력')
+silicon_valley_details_df = pd.read_csv('silicon_valley_details.csv')
+silicon_valley_details_df
+
+adobe = silicon_valley_details_df[(silicon_valley_details_df['company'] == 'Adobe') & (silicon_valley_details_df['race'] == 'Overall_totals')]
+adobe_jobs = adobe.loc[:, ['job_category', 'count']]
+adobe_jobs.set_index('job_category', inplace = True)
+adobe_jobs.drop(['Totals', 'Previous_totals'], inplace = True)
+adobe_jobs = adobe_jobs[adobe_jobs['count'] != 0]
+adobe_jobs.plot(kind = 'pie', y = 'count')
+print()
+
+# 히스토그램
+print('히스토그램')
+body_df = pd.read_csv('body.csv', index_col = 0)
+body_df.plot(kind = 'hist', y = 'Height')
+body_df.plot(kind = 'hist', y = 'Height', bins = 15)
+# 범위 세분화
+body_df.plot(kind = 'hist', y = 'Height', bins = 200)
+# 너무 많음
+print()
+
+# 스타벅스 음료 칼로리를 히스토그램으로 총 20개 구간으로 나눠서 출력
+print('스타벅스 음료 칼로리를 히스토그램으로 총 20개 구간으로 나눠서 출력')
+starbucks_drinks_df = pd.read_csv('starbucks_drinks.csv')
+
+starbucks_drinks_df['Calories']
+starbucks_drinks_df.plot(kind = 'hist', y = 'Calories', bins = 20)
+print()
+
+# 박스 플롯
+print('박스 플롯')
+# 위에서부터 순서대로 
+# 최댓값
+# 75% 지점(Q3)
+# 중간값 : 50% 지점(Q2)
+# 25% 지점(Q1)
+# 최솟값
+# 바깥에 있는 점들은 이상점이라고 한다.
+
+exam_df = pd.read_csv('exam.csv')
+exam_df['math score'].describe() # 통계수치들이 요약되서 나온다.
+exam_df.plot(kind = 'box', y = 'math score')
+exam_df.plot(kind = 'box', y = ['math score', 'reading score', 'writing score'])
+print()
+
+# 스타벅스 음료 칼로리를 박스 플롯으로 출력
+print('스타벅스 음료 칼로리를 박스 플롯으로 출력')
+starbucks_drinks_df2 = pd.read_csv('starbucks_drinks.csv')
+starbucks_drinks_df2
+
+starbucks_drinks_df2.plot(kind = 'box', y = 'Calories')
+print()
+
+# 산점도
+print('산점도')
+exam_df2 = pd.read_csv('exam.csv')
+exam_df2
+exam_df2.plot(kind = 'scatter', x = 'math score', y = 'reading score')
+# 수학과 읽기 점수의 산점도
+exam_df2.plot(kind = 'scatter', x = 'math score', y = 'writing score')
+# 수학과 쓰기 점수의 산점도
+exam_df2.plot(kind = 'scatter', x = 'reading score', y = 'writing score')
+# 읽기와 쓰기 점수의 산점도
+print()
+
+# 국가 지표 분석하기
+print('국가 지표 분석하기')
+world_indexes_df = pd.read_csv('world_indexes.csv', index_col = 0)
+# 다음 중 가장 연관성이 깊은 지표는?
+# 1. 기대 수명 - 인터넷 사용자 비율
+# 2. 숲 면적 비율 - 탄소 배출 증가율
+# 3. 인터넷 사용자 비율 - 숲 면적 비율
+# 4. 기대 수명 - 탄소 배출 증가율
+# 5. 기대 수명 - 숲 면적 비율
+
+# 1.
+world_indexes_df.plot(kind = 'scatter', x = 'Life expectancy at birth- years', y = 'Internet users percentage of population 2014')
+# 2.
+world_indexes_df.plot(kind = 'scatter', x = 'Forest area percentage of total land area 2012', y = 'Carbon dioxide emissionsAverage annual growth')
+# 3.
+world_indexes_df.plot(kind = 'scatter', x = 'Internet users percentage of population 2014', y = 'Forest area percentage of total land area 2012')
+# 4.
+world_indexes_df.plot(kind = 'scatter', x = 'Life expectancy at birth- years', y = 'Carbon dioxide emissionsAverage annual growth')
+# 5.
+world_indexes_df.plot(kind = 'scatter', x = 'Life expectancy at birth- years', y = 'Forest area percentage of total land area 2012')
+print()
+
+# 확률밀도 함수(PDF)
+print('확률밀도 함수(PDF)')
+# Seaborn(Statistical Data Visualization)
+# 통계를 기반으로 한 데이터 시각화
+import seaborn as sns
+
+# 확률 밀도 함수는 데이터셋의 분포를 나타낸다.
+# 특정 구간의 확률은 그래프 아래 그 구간의 면적과 동일하다.
+# 그래프 아래의 모든 면적을 더하면 1(100%)이다.
+print()
+
+# KDE Plot
+print('KDE Plot')
+body_df2 = pd.read_csv('body.csv', index_col = 0)
+body_df2
+body_df2['Height'].value_counts().sort_index().plot()
+sns.kdeplot(body_df2['Height'])
+sns.kdeplot(body_df2['Height'], bw = 0.5)
+sns.kdeplot(body_df2['Height'], bw = 2)
+# bw를 적당하게 값을 줘야한다.
+print()
+
+# 승차인원에 대한 KDE Plot를 그려라
+print('승차인원에 대한 KDE Plot를 그려라')
+subway_df = pd.read_csv('subway.csv')
+sns.kdeplot(subway_df['in'])
+print()
+
+# KDE활용 예시
+print('KDE활용 예시')
+body_df3 = pd.read_csv('body.csv', index_col = 0)
+body_df3
+body_df3.plot(kind = 'hist', y = 'Height')
+body_df3.plot(kind = 'hist', y = 'Height', bins = 15)
+# 기본 pandas에서 제공하는 히스토그램
+sns.distplot(body_df3['Height'], bins = 15)
+# seaborn에서 제공하는 히스토그램
+body_df3.plot(kind = 'box', y = 'Height')
+# 기본 pandas에서 제공하는 박스플롯
+sns.violinplot(y = body_df3['Height'])
+# 분포 전체를 보여준다는 장점이 있다.
+body_df3.plot(kind = 'scatter', x = 'Height', y = 'Weight')
+# 기본 pandas에서 제공하는 산점도
+sns.kdeplot(body_df3['Height'], body_df3['Weight'])
+# seaborn의 등고선 그래프
+print()
+
+# 교수의 급여에 대한  Violin Plot을 출력
+print('교수의 급여에 대한  Violin Plot을 출력')
+salaries_df = pd.read_csv('salaries.csv')
+salaries_df
+sns.violinplot(x = salaries_df['salary'])
+print()
+
+# LM Plot
+print('LM Plot')
+body_df4 = pd.read_csv('body.csv', index_col = 0)
+body_df4
+sns.lmplot(data = body_df4, x = 'Height', y = 'Weight')
+# 키와 몸무게가 연관서이 많이 없기때문에 선과 점이 많이 떨어져있다.
+print()
+
+# 카테고리별 시각화
+print('카테고리별 시각화')
+laptops_df2 = pd.read_csv('laptops.csv')
+laptops_df2
+laptops_df2['os'].unique()
+sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'box')
+sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'violin')
+sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'strip')
+# 카테고리별로 얼만큼 분포가 나눠져 있는지 볼수있다.
+laptops_df2['processor_brand'].unique() # 프로세서
+sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'strip', hue = 'processor_brand')
+# hue옵션을 색을 다르게 해주는 옵션, 하지만 점들이 겹쳐져있어서 보기 불편
+sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'swarm', hue = 'processor_brand')
+# kind = 'swarm'으로 하면 점들이 겹치지않고 펼쳐져서 보기 편해진다.
+print()
+
+
+# 흡연 여부 카테고리에 따라 보험금을 살펴볼수 있는 그래프를 출력 
+print('흡연 여부 카테고리에 따라 보험금을 살펴볼수 있는 그래프를 출력')
+insurance_df = pd.read_csv('insurance.csv')
+sns.catplot(data = insurance_df, x = 'smoker', y = 'charges', kind = 'violin')
+print()
+
+
+# 중간값
+print('중간값')
+# 데이터셋에서 딱 중간에 있는 값
+
+# 홀수 개수일 때
+# 32, 48, 56, 78, 86, 96, 100
+# 가운데 있는 78이 중간값이다.
+
+# 짝수 개수일 때
+# 7, 11, 12, 15, 16, 21, 24, 29
+# 가운데에 있는 15, 16의 평균인 15.5가 중간값이다.
+print()
+
+
+# 평균값 vs 중간값
+print('평균값 vs 중간값')
+
+print((13 + 16 + 23 + 35 + 37 + 43 + 48 + 52 + 82 + 120 + 63000) / 11)
+print((13 + 16 + 23 + 35 + 37 + 43 + 48 + 52 + 82 + 120) / 10)
+# 값이 많이 차이났을때 평균값은 데이터셋의 중심을 제대로 표현하지 못한다.
+print()
+
+
+# 상관계수
+print('상관계수')
+
+# 통계에서는 연관성을 표현하는 수치를 상관계수
+# 가장 널리쓰이는것이 피어슨 상관계수이다.
+# 피어슨 상관계수는 -1부터 1까지 표현 가능한데
+# 0이면 연관이 없고 1에 가까워 질수록 연관성이 커진다.
+# 반대로 -1에 가까워지면 x랑 y가 반대의 관계이다.
+print()
+
+
+# 상관 계수 시각화
+print('상관 계수 시각화')
+exam_df3 = pd.read_csv('exam.csv')
+exam_df3
+
+print(exam_df3.corr())
+# corr()메소드를 사용하면 숫자데이터 사이의 상관 계수를 보여준다.
+# 하지만 숫자가 많으면 한눈에 들어오지 않을 수 있다.
+# 이럴때는 히트맵을 사용하면 좋다.
+sns.heatmap(exam_df3.corr())
+# 색이 밝을수록 상관계수가 높다.
+sns.heatmap(exam_df3.corr(), annot = True)
+# 여기에 annot = True 옵션을 써주면 숫자도 함께 표현해 준다.
+print()
+
+
+# EDA란?
+print('EDA란?')
+# Exploratory Data Analysis(EDA)
+# 탐색적 데이터 분석
+# 데이터셋을 다양한 관점에서 살펴보고 탐색하면서 인사이트를 찾는 것
+print()
+
+
+# 기본 정보 파악하기
+print('기본 정보 파악하기')
+young_survey_df = pd.read_csv('young_survey.csv')
+# 997명에게 설문조사 column 147개
+# 0 ~ 18 : 음악 취향
+# 19 ~ 30 : 영화 취향
+# 31 ~ 62 : 취미/관심사
+# 63 ~ 72 : 공포증
+# 73 ~ 75 : 건강 습관
+# 76 ~ 132 : 성격, 인생관 등
+# 133 ~ 139 : 소비 습관
+# 140 ~ 146 : 기본 정보
+basic_info = young_survey_df.iloc[:,140:] # 기본정보
+basic_info.describe() # 숫자로 된 컬럼들만 나옴
+basic_info['Gender'].value_counts()
+basic_info['Handedness'].value_counts()
+basic_info['Education'].value_counts()
+sns.violinplot(data = basic_info, y = 'Age')
+# 10대 후반에서 20대 초반이 많다.
+sns.violinplot(data = basic_info, x = 'Gender', y = 'Age')
+sns.violinplot(data = basic_info, x = 'Gender', y = 'Age', hue = 'Handedness')
+sns.jointplot(data = basic_info, x = 'Height', y = 'Weight')
+print()
+
+
+# 요즘 인기있는 직업은?
+print('요즘 인기있는 직업은?')
+occupations_df = pd.read_csv('occupations.csv')
+occupations_df
+
+# 여성이 가장 많이 종사하고 있는 상위 직종 3개
+women = occupations_df[occupations_df['gender'] == 'F']
+women['occupation'].value_counts()
+# 가장 인기있는 직종 3개 : student, other, administrator
+
+# 남성이 가장 많이 종사하고 있는 직종 상위 3개
+men = occupations_df[occupations_df['gender'] == 'M']
+men['occupation'].value_counts()
+# 가장 인기있는 직종 3개 : student, educator, other
+print()
+
+
+# 상관 관계 분석
+print('상관 관계 분석')
+young_survey_df2 = pd.read_csv('young_survey.csv')
+music = young_survey_df2.iloc[:,:19] # 음악과 관련된 컬럼
+music
+# 각 데이터에 1.0 ~ 5.0까지 데이터가 들어가 있다.
+# 가장좋아하면 5.0, 싫어하면 1.0이다.
+sns.heatmap(music.corr())
+
+young_survey_df2.corr()['Age'].sort_values(ascending = False)
+# 나이에 따른 상관계수
+print()
+
+# 브런치 카페 음악 셀렉션
+print('브런치 카페 음악 셀렉션')
+# "Getting up"이라는 coumn을 보면 5라고 대답한 사람들은 
+# 아침에 일어나기 어려운 사람이고 1이라고 대답한 사람은
+# 아침에 쉽게 일어나는 사람이다. 이 데이터로 봤을때
+# 아침에 일찍일어나는 사람들이 가장 좋아할 만한 음악 장르는??
+young_survey_df3 = pd.read_csv('young_survey.csv')
+get_up = young_survey_df3.corr()['Getting up']
+# 알침에 일어나는 것에 따른 상관계수
+get_up[1:19].sort_values()
+# 음악 장르
+print()
+
+
+# 스타트업 아이템 탐색하기
+print('스타트업 아이템 탐색하기')
+young_survey_df4 = pd.read_csv('young_survey.csv')
+young_survey_df4
+# 영준이는 스타트업을 준비하고 있다.
+# 사업 아이템을 고민하면서 나름대로 가설을 몇 개 세웠다.
+# 1. 악기를 다루는 사람들은 시 쓰기를 좋아하는 경향이 있을 것이다.
+# 2. 외모에 돈을 많이 투자하는 사람들은 브랜드 의류를 선호할 것이다.
+# 3. 메모를 자주 하는 사람들은 새로운 환경에 쉽게 적응할 것이다.
+# 4. 워커홀릭들은 건강한 음식을 먹으려는 경향이 있을 것이다.
+# 설문조사 데이터를 바탕으로 가장 가능성이 낮은 가설은?
+
+# 가성과 관련있는 컬럼
+# Branded clothing: 나는 브랜드가 없는 옷보다 브랜드가 있는 옷을 선호한다.
+# Healthy eating: 나는 건강하거나 품질이 좋은 음식에는 기쁘게 돈을 더 낼 수 있다.
+# Musical instruments: 나는 악기 연주에 관심이 많다.
+# New environment: 나는 새 환경에 잘 적응하는 편이다.
+# Prioritising workload: 나는 일을 미루지 않고 즉시 해결해버리려고 한다.
+# Spending on looks: 나는 내 외모에 돈을 많이 쓴다.
+# Workaholism: 나는 여가 시간에 공부나 일을 자주 한다.
+# Writing: 나는 시 쓰기에 관심이 많다.
+# Writing notes: 나는 항상 메모를 한다.
+
+# 1. 
+re_1 = young_survey_df4.loc[:, ['Musical instruments', 'Writing']]
+re_1.corr()
+# 0.343816
+
+# 2. 
+re_2 = young_survey_df4.loc[:, ['Spending on looks', 'Branded clothing']]
+re_2.corr()
+# 0.418399
+
+# 3. (가장낮은 -0.079397을 가지고 있다.)
+re_3 = young_survey_df4.loc[:, ['Writing notes', 'New environment']]
+re_3.corr()
+# -0.079397
+
+# 4. 
+re_4 = young_survey_df4.loc[:, ['Workaholism', 'Healthy eating']]
+re_4.corr()
+# 0.238644
+print()
+
+
+# 클러스터 분석
+print('클러스터 분석')
+# 클러스터는 데이터들을 몇가지 부류로 만드는것이다
+young_survey_df5 = pd.read_csv('young_survey.csv')
+interests = young_survey_df5.iloc[:, 31:63]
+# 관심사에 대한 컬럼 추출
+inter_corr = interests.corr()
+# 관심사들끼리의 상관 관계
+inter_corr['History'].sort_values(ascending = False)
+# 하나의 컬럼마다 하나하나 하면 힘들고 정확하지 않을수도 있다.
+sns.clustermap(inter_corr)
+# 시각화 하게되면 사다리처럼 엮여있는것이 있다.
+# 이것이 서로 연관되어 있다는 것을 보여주는 것이다.
+
+# =============================================================================
