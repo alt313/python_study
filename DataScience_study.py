@@ -62,6 +62,7 @@ print(type(array1))
 print(array1.shape)
 print()
 
+
 # 인덱싱, 슬라이싱 색인
 print('인덱싱, 슬라이싱 색인')
 print(array1[0])
@@ -107,6 +108,14 @@ print(array1 / array2)
 # 같은 자리끼리 연산한다.
 print()
 
+print(array1)
+print(array2)
+print(array1 * 2)
+print(array1 ** 2)
+print(array1 + array2)
+print(array1 * array2)
+print()
+
 # numpy 불린 연산
 print('numpy 불린 연산')
 array1 = np.array([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31])
@@ -116,6 +125,7 @@ print(array1 % 2 == 0)
 print()
 
 booleans = np.array([True, True, False, True, True, False, True, True, True, False, True])
+print(booleans)
 print(np.where(booleans))
 # True인 인덱스를 출력해준다
 Filter = np.where(array1 > 4)
@@ -137,6 +147,7 @@ print(df)
 print(type(df))
 print(df.columns)
 print(df.index)
+print()
 print(df.dtypes)
 print()
 
@@ -168,7 +179,9 @@ print()
 print('DataFrmae 인덱싱1')
 iphone_df2 = pd.read_csv('iphone.csv', index_col = 0)
 print(iphone_df2.loc['iPhone 8', '메모리']) # iPhone 8의 메모리 출력
+print()
 print(iphone_df2.loc['iPhone X', :]) # iPhone X 전체 출력
+print()
 print(iphone_df2.loc[:, '출시일']) # 모든 iPhone의 출시일
 print()
 
@@ -226,7 +239,7 @@ print()
 print('DataFrame 조건으로 인덱싱')
 iphone_df4 = pd.read_csv('iPhone.csv', index_col = 0)
 print(iphone_df4)
-print(iphone_df4.loc[[True, False, True, True, False, True, False]]) # True인 인덱스들만 출력
+print(iphone_df4.loc[[True, False, True, True, False, True, False],:]) # True인 인덱스들만 출력
 # iphone_df4.loc[[True, False, False, True]]
 print(iphone_df4.loc[[True, False, False, True, False, False, False]])
 # 강의영상에는 4개만 적으면 나머지들은 False라고 하였으나 현재버전에서는 전부 적어줘야 한다
@@ -265,24 +278,26 @@ print(iphone_df5.iloc[[1, 3], [1, 4]])
 print(iphone_df5.iloc[3:, 1:4])
 print()
 
+
 # DataFrame에 값 쓰기1
-print('DataFrame에 값 쓰기2')
+print('DataFrame에 값 쓰기1')
 iphone_df6 = pd.read_csv('iPhone.csv', index_col = 0)
 print(iphone_df6)
 iphone_df6.loc['iPhone 8', '메모리'] = '2.5GB' # 메모리 2GB -> 2.5GB로 변경
 print(iphone_df6)
 iphone_df6.loc['iPhone 8', '출시 버전'] = 'iOS 10.3' # 출시버전 iOS 11.0 -> iOS 10.3으로 변경
 print(iphone_df6)
-iphone_df6.loc['iPhone 8'] = ['2016-09-22', '4.7', '2GB', 'iOS 11.0', 'No']
+iphone_df6.loc['iPhone 8',:] = ['2016-09-22', '4.7', '2GB', 'iOS 11.0', 'No']
 # iPhone 8 행 데이터 전부 변경
 print(iphone_df6)
 iphone_df6['디스플레이'] = ['4.7 in', '5.5 in', '4.7 in', '5.5 in', '5.8 in', '5.8 in', '6.5 in']
 # 디스플레이 컬럼 데이터 전부 변경
-print(iphone_df6)
+print(iphone_df6['디스플레이'])
 iphone_df6['Face ID'] = 'Yes'
 # 하나의 값으로 전부 변경할 때
 print(iphone_df6)
 print()
+
 
 # DataFrame에 값 쓰기2
 print('DataFrame에 값 쓰기2')
@@ -1045,5 +1060,95 @@ inter_corr['History'].sort_values(ascending = False)
 sns.clustermap(inter_corr)
 # 시각화 하게되면 사다리처럼 엮여있는것이 있다.
 # 이것이 서로 연관되어 있다는 것을 보여주는 것이다.
+print()
+
+
+# 영화 카페 운영하기
+print('영화 카페 운영하기') 
+# 수 많은 영화 DVD를 어떻게 배치해야 할지 고민입니다. 좀 연관된 장르끼리 묶어서 보관해야, 
+# 각 손님들의 취향을 잘 맞출 수 있을 것 같습니다. 영화 장르에 대한 column은 
+# 'Horror'부터 'Action'까지 입니다. 영화 장르에 대해서 clustermap을 그려 보세요
+survey_df = pd.read_csv('survey.csv')
+movie = survey_df.loc[:, 'Horror':'Action']
+movie_corr = movie.corr()
+sns.clustermap(movie_corr)
+print()
+
+
+# 타이타닉 EDA
+print('타이타닉 EDA')
+titanic = pd.read_csv('titanic.csv')
+titanic
+# 타이타닉호의 침몰은 무려 1514명 정도가 사망한 비운의 사건이다.
+# 영화 ‘타이타닉’으로 인해 이름이 가장 널리 알려진 여객선이기도 합니다.
+# 당시 탑승자들의 생존 여부, 성별, 나이, 지불한 요금, 좌석 등급 등의 정보가 있다.
+# 다양한 방면으로 EDA(탐색적 데이터 분석)를 한 후, 다음 보기 중 맞는 것을 모두 고르세요.
+
+# 생존 여부는 'Survived' column에 저장되어 있습니다. 0이 사망, 1이 생존을 의미합니다.
+# 좌석 등급은 'Pclass' column에 저장되어 있습니다. 1은 1등실, 2는 2등실, 3은 3등실을 의미합니다.
+# 지불한 요금은 'Fare' column에 저장되어 있습니다.
+
+titanic.columns
+
+# 1.
+# 타이타닉의 승객은 30대와 40대가 가장 많다.
+titanic_70 = titanic[titanic['Age'] >=  70] # 70대 : 7명
+titanic_60 = titanic[(titanic['Age'] >=  60) & (titanic['Age'] <  70)] # 60대 : 19명
+titanic_50 = titanic[(titanic['Age'] >=  50) & (titanic['Age'] <  60)] # 50대 : 48명
+titanic_40 = titanic[(titanic['Age'] >=  40) & (titanic['Age'] <  50)] # 40대 : 89명
+titanic_30 = titanic[(titanic['Age'] >=  30) & (titanic['Age'] <  40)] # 30대 : 167명
+titanic_20 = titanic[(titanic['Age'] >=  20) & (titanic['Age'] <  30)] # 20대 : 220명
+titanic_10 = titanic[(titanic['Age'] >=  10) & (titanic['Age'] <  20)] # 10개 : 102명
+titanic_0 = titanic[titanic['Age'] <  10] # 10살 미만 : 62명
+titanic.plot(kind = 'hist', y = 'Age', bins = 50)
+
+# 2.
+# 가장 높은 요금을 낸 사람은 30대이다.
+titanic_70['Fare'].describe() # 70대 : 71.0
+titanic_60['Fare'].describe() # 60대 : 263.0
+titanic_50['Fare'].describe() # 50대 : 247.52
+titanic_40['Fare'].describe() # 40대 : 227.525
+titanic_30['Fare'].describe() # 30대 : 512.3292
+titanic_20['Fare'].describe() # 20대 : 263.0
+titanic_10['Fare'].describe() # 10대 : 263.0
+titanic_0['Fare'].describe() # 10살 미만 151.55
+titanic.plot(kind = 'scatter', x = 'Age', y = 'Fare')
+
+# 3.
+# 생존자가 사망자보다 더 많다.
+titanic['Survived'].value_counts()
+# 0(사망) : 549, 1(생존): 342
+
+# 4.
+# 1등실, 2등실, 3등실 중 가장 많은 사람이 탑승한 곳은 3등실이다.
+titanic['Pclass'].value_counts()
+# 1(1등실) : 216, 2(2등실) : 184, 3(3등실) : 491
+
+# 5.
+# 가장 생존율이 높은 객실 등급은 1등실이다.
+titanic_cs = titanic.loc[:, ['Pclass', 'Survived']]
+titanic_cs.value_counts()
+sns.kdeplot(titanic['Pclass'], titanic['Survived'])
+
+# 6
+# 나이가 어릴수록 생존율이 높다.
+titanic_70['Survived'].value_counts() # 1 / 7 (약 14.3%)
+titanic_60['Survived'].value_counts() # 6 / 19 (약 31.5%)
+titanic_50['Survived'].value_counts() # 20 / 48 (약 41.7%)
+titanic_40['Survived'].value_counts() # 34 / 89 (약 38.2%)
+titanic_30['Survived'].value_counts() # 73 / 167 (약 43.7%)
+titanic_20['Survived'].value_counts() # 77 / 220 (약 35.0%)
+titanic_10['Survived'].value_counts() # 41 / 102(약 40.2%)
+titanic_0['Survived'].value_counts() # 24 / 62 (약 38.7%)
+sns.stripplot(data = titanic, x = 'Survived', y = 'Age')
+
+# 7
+# 나이보다 성별이 생존율에 더 많은 영향을 미친다.
+titanic.loc[:,['Sex', 'Survived']].value_counts()
+# female : 233 / 314(약 74.2%)
+# male : 109 / 577(약 18.89%)
+sns.stripplot(data = titanic, x = 'Survived', y = 'Age', hue = 'Sex')
+print()
+
 
 # =============================================================================
