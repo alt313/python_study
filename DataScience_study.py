@@ -1151,4 +1151,231 @@ sns.stripplot(data = titanic, x = 'Survived', y = 'Age', hue = 'Sex')
 print()
 
 
+# 새로운 값 계산하기
+print('새로운 값 계산하기')
+broadcast_df9 = pd.read_csv('broadcast.csv', index_col = 0)
+broadcast_df9
+broadcast_df9.plot()
+broadcast_df9['KBS'] + broadcast_df9['MBC'] + broadcast_df9['SBS'] + broadcast_df9['TV CHOSUN'] + broadcast_df9['JTBC'] + broadcast_df9['Channel A'] + broadcast_df9['JTBC'] + broadcast_df9['MBN']
+# 이것을 더 깔끔하게 쓴다면
+broadcast_df9.sum(axis = 'columns')
+# 또는 axis = 1이라 쓰면 된다.
+broadcast_df9['Total']= broadcast_df9.sum(axis = 'columns')
+broadcast_df9
+broadcast_df9.plot(y = 'Total')
+# 시청률이 매년 떨어지는것을 볼 수 있다.
+broadcast_df9['Group 1'] = broadcast_df9.loc[:, 'KBS':'SBS'].sum(axis = 'columns')
+# 지상파 시청률 합
+broadcast_df9['Group 2'] = broadcast_df9.loc[:, 'TV CHOSUN':'MBN'].sum(axis = 'columns')
+# 종편채널 시청률 합
+broadcast_df9.plot(y = ['Group 1', 'Group 2'])
+# 지상파 시청률은 떨어지고있고 종편채널의 시청률은 올라가는것을 확인할 수 있다.
+print()
+
+
+# 문자열 필터링
+print('문자열 필터링')
+# albums_df = pd.read_csv('albums.csv', engine = 'python')
+albums_df = pd.read_csv('albums.csv', encoding = 'latin1')
+# 파일이 latin1방식으로 인코딩 되어있어서 불러왔을때 글자가 깨지지 않기 위한 옵션
+albums_df
+albums_df['Genre'].str.contains('Blues')
+# 음악 장르중 Blues장르 음악을 추출하고 싶을 때
+albums_df[albums_df['Genre'].str.contains('Blues')]['Genre']
+
+albums_df['Genre'].str.startswith('Blues')
+# 음악 장르중 Blues가 앞에 나와있는거만 추출하고 싶을 때
+albums_df[albums_df['Genre'].str.startswith('Blues')]['Genre']
+print()
+
+
+# 박물관이 살아 있다1
+print('박물관이 살아 있다1')
+# 대학 박물관을 개선하기 위해 다음과 같이 박물관을 분류하기로 하였습니다.
+
+# 박물관은 대학/일반 박물관으로 나뉜다.
+# 시설명에 '대학'이 포함되어 있으면 '대학', 그렇지 않으면 '일반'으로 나누어 '분류' column에 입력한다.
+# '분류' column을 만들어서 솔희를 도와주세요!
+museum_1_df = pd.read_csv('museum_1.csv')
+museum_1_df['분류'] = np.where(museum_1_df['시설명'].str.contains('대학'), '대학', '일반')
+museum_1_df
+print()
+
+
+# 문자열 분리
+print('문자열 분리')
+parks_df = pd.read_csv('parks.csv')
+parks_df['소재지도로명주소'].str.split(n = 1, expand = True)[0]
+# 관할 구역을 추출 n = 1(첫번째까지만 나눔), expand = True(데이터프레임 형식으로) 
+parks_df['관할구역'] = parks_df['소재지도로명주소'].str.split(n = 1, expand = True)[0]
+parks_df
+print()
+
+
+# 박물관이 살아 있다2
+print('박물관이 살아 있다2')
+# 어느 지역에 박물관이 많은지 분석해보려 한다. 하지만 주어진 데이터에는 
+# 주소가 없고 전화번호 앞자리가 지역을 나타낸다는 것을 알수있다.
+# 박물관의 위치를 파악할 수 있게 '운영기관전화번호' column의 
+# 맨 앞 3자리를 추출하고, '지역번호' column에 넣어라.
+museum_2_df = pd.read_csv('museum_2.csv')
+area_code = museum_2_df['운영기관전화번호'].str.split('-', n = 1, expand = True)[0]
+museum_2_df['지역번호'] = area_code
+print()
+
+
+# 카테고리로 분류
+print('카테고리로 분류')
+laptops_df3 = pd.read_csv('laptops.csv')
+laptops_df3['brand'].unique()
+# 브랜드가 있지만 각 브랜드를 만든 국가별로 분석하고 싶다.
+brand_nation = {
+    'Dell' : 'U.S.',
+    'Apple' : 'U.S.',
+    'Acer' : 'Taiwan',
+    'HP' : 'U.S.',
+    'Lenovo' : 'Chine',
+    'Alienware' : 'U.S.',
+    'Microsoft' : 'U.S.',
+    'Asus' : 'Taiwan'
+}
+laptops_df3['brand_nation'] = laptops_df3['brand'].map(brand_nation)
+# brand의 값이 dictionary의 키값에 매칭 되어 그안에 있는 값이 들어간다.
+laptops_df3
+
+
+# 박물관이 살아 있다3
+print('박물관이 살아 있다3')
+# 지역번호가 02이면 '서울시'이고, 지역번호가 064라면 '제주도'입니다.
+# '지역번호' column을 '지역명' 으로 변경하고, 아래 규칙에 따라 지역을 넣어라
+# 서울시: 	02
+# 경기도:	031, 032
+# 강원도	:   033
+# 충청도:   041, 042, 043, 044
+# 부산시:	051
+# 경상도:	052, 053, 054, 055
+# 전라도:	061, 062, 063
+# 제주도:	064
+# 기타:   	1577, 070
+museum_3_df = pd.read_csv('museum_3.csv', dtype = {'지역번호' : str})
+museum_3_df
+area_dic = {
+    '02': '서울시',
+    '031' : '경기도',
+    '032' : '경기도',
+    '033' : '강원도',
+    '041' : '충청도',
+    '042' : '충청도',
+    '043' : '충청도',
+    '044' : '충청도',
+    '051' : '부산시',
+    '052' : '경상도',
+    '053' : '경상도',
+    '054' : '경상도',
+    '055' : '경상도',
+    '061' : '전라도',
+    '062' : '전라도',
+    '063' : '전라도',
+    '064' : '제주도',
+    '1577' : '기타',
+    '070' : '기타'
+}
+museum_3_df['지역번호'] = museum_3_df['지역번호'].map(area_dic)
+museum_3_df.rename(columns = {'지역번호' : '지역명'}, inplace = True)
+museum_3_df
+print()
+
+
+# groupby 
+print('group')
+laptops_df3
+# brand_nation컬럼의 나라 카테고리별로 나누고 싶다.
+nation_groups = laptops_df3.groupby('brand_nation')
+type(nation_groups)
+nation_groups.count()
+# 나라별로 각 컬럼에 몇개씩 있는지 알수 있다.
+# nation_groups.max()
+# 현재 pandas버전에서는 안됨
+nation_groups.mean()
+# 나라별 각 컬럼의 평균값
+nation_groups.first()
+# 나라별 제일 첫번째에 있는 값
+nation_groups.last()
+# 나라별 제일 마지막에 있는 값
+nation_groups.plot(kind = 'box', y = 'price')
+# 나라별 가격 box플롯
+nation_groups.plot(kind = 'hist', y = 'price')
+# 나라별 가격 히스토그램
+print()
+
+
+# 직업 탐구하기1
+print('직업 탐구하기1')
+# 각 직업의 평균 나이가 궁금하다.
+# groupby 문법을 사용해서 '평균 나이'가 어린 순으로 직업을 나열하라.
+occupations_df2 = pd.read_csv('occupations.csv')
+occupation_groups = occupations_df2.groupby('occupation')
+occupation_groups.mean()['age'].sort_values()
+print()
+
+
+# 직업 탐구하기2
+print('직업 탐구하기2')
+# 이번에는 여자 비율이 높은 직업과, 남자 비율이 높은 직업이 무엇인지 궁금하다.
+# groupby 문법을 사용해서 '여성 비율'이 높은 순으로 직업을 나열하라.
+# DataFrame이 아닌 Series로, 'gender'에 대한 값만 출력되어야 한다.
+occupations_df3 = pd.read_csv('occupations.csv')
+occupation_groups2 = occupations_df3.groupby('occupation')
+gender_f = occupations_df3[occupations_df3['gender'] == 'F']
+gender_f.groupby('occupation').count()['gender']
+gen_f = gender_f.groupby('occupation').count()['gender'] / occupation_groups2.count()['gender']
+gen_f.sort_values(ascending = False).fillna(0)
+
+# 다른방법
+# occupation_groups2.mean()
+# occupations_df3['gender'] = np.where(occupations_df3['gender'] == 'M', 0, 1)
+# occupation_groups2 = occupations_df3.groupby('occupation')
+# occupation_groups2.mean()['gender'].sort_values(ascending = False)
+print()
+
+
+# 데이터 합치기
+print('데이터 합치기')
+# 합치는 4가지 방법
+# 1. inner join : 겹치는 부분만 합친다.(교집합)
+# 2. left outer join : 왼쪽 데이터에 존재하는 데이터기준으로 합친다.
+# 3. right outer join : 오른쪽 데이터에 존재하는 데이터기준으로 합친다.
+# 4. full outer join : 양쪽데이터 전부 합친다.
+
+vegetable_price_df = pd.read_csv('vegetable_price.csv')
+vegetable_quantity_df = pd.read_csv('vegetable_quantity.csv')
+vegetable_price_df
+vegetable_quantity_df
+
+pd.merge(vegetable_price_df, vegetable_quantity_df, on ='Product')
+# 기본값이 inner join
+pd.merge(vegetable_price_df, vegetable_quantity_df, on ='Product', how = 'left')
+# vegetable_price_df 데이터 기준으로 합친다.
+pd.merge(vegetable_price_df, vegetable_quantity_df, on ='Product', how = 'right')
+# vegetable_quantity_df 데이터 기준으로 합친다.
+pd.merge(vegetable_price_df, vegetable_quantity_df, on ='Product', how = 'outer')
+# 양족데이터 전부 합친다.
+print()
+
+
+# 박물관이 살아 있다4
+print('박물관이 살아 있다4')
+# 파이썬 사전과 .map()을 사용해서 지역명을 알아낸 솔희는, 조금 더 편한 방법을
+# 고민하던 중, '지역번호와 지역명에 대한 데이터는 누군가 이미 만들어두지 않았을까'라는 생각을 하게 되는데
+# 인터넷에서 지역번호와 지역명이 있는 데이터 region_number.csv를 구했다
+# 이 데이터를 먼저 살펴보고, .merge() 메소드를 활용해서 museum_3.csv에 '지역명' column을 추가.
+# 단, museum_3.csv의 박물관 순서가 유지되어야 한다.
+region_number_df = pd.read_csv('region_number.csv', dtype = {'지역번호' : str})
+museum_3_df2 = pd.read_csv('museum_3.csv', dtype = {'지역번호' : str})
+museum_3_df2 = pd.merge(museum_3_df2, region_number_df, on = '지역번호', how = 'left')
+museum_3_df2
+print()
+
+
 # =============================================================================
+
