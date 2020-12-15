@@ -175,6 +175,13 @@ df2 = pd.read_csv('mega_millions.csv', index_col = 0)
 print(df2)
 print()
 
+
+
+
+
+
+# DataFrame 다루기
+# =============================================================================
 # DataFrmae 인덱싱1
 print('DataFrmae 인덱싱1')
 iphone_df2 = pd.read_csv('iphone.csv', index_col = 0)
@@ -321,6 +328,7 @@ iphone_df7.iloc[[1, 3], [1, 4]] = 'v'
 print(iphone_df7)
 print()
 
+
 # DataFrame에 값 추가/삭제
 print('DataFrame에 값 추가/삭제')
 iphone_df8 = pd.read_csv('iPhone.csv', index_col = 0)
@@ -350,7 +358,7 @@ print()
 # 키와 몸무게가 담겨있는 DataFrame이 있다. 아래 3가지만 수정
 print('키와 몸무게가 담겨있는 DataFrame이 있다. 아래 3가지만 수정')
 body_imperial_df = pd.read_csv('body_imperial1.csv', index_col = 0)
-
+body_imperial_df
 # 1. ID 1의 무게를 200으로 변경
 print('1. ID 1의 무게를 200으로 변경')
 body_imperial_df.loc[1,'Weight (Pound)'] = 200
@@ -582,6 +590,8 @@ for i in enrolment_df2['course name']:
     
 enrolment_df2.loc[enrolment_df2['status'] == 'not allowed', 'room assignment'] = 'not assigned'
 print(enrolment_df2)
+print()
+
 
 # 강의실 배정하기2
 print('강의실 배정하기2')
@@ -637,6 +647,9 @@ for i in list_4:
 enrolment_df3.loc[enrolment_df3['status'] == 'not allowed', 'room number'] = 'not assigned'
 print(enrolment_df3)
 print()
+# =============================================================================
+
+
 
 
 
@@ -1375,7 +1388,231 @@ museum_3_df2 = pd.read_csv('museum_3.csv', dtype = {'지역번호' : str})
 museum_3_df2 = pd.merge(museum_3_df2, region_number_df, on = '지역번호', how = 'left')
 museum_3_df2
 print()
-
-
 # =============================================================================
 
+
+
+
+
+
+# 데이터 퀄리티 높이기
+# =============================================================================
+# 데이터 퀄리티의 중요성
+
+# 좋은 데이터의 기준 : 완결성
+# 만약 회원가입을 할 때 필수항목을 입력하지 않으면 다음단계로 넘어가지 못한다.
+# 그건 바로 데이터의 완결성이 위배되기 때문이다.NaN이 대표적인 예
+
+# 데이터 완결성은 어떻게 알 수 있을까?
+# 결측값(채워져야 하는데 비어있는 값)이 있는지 확인해야한다.
+# NaN이 대표적인 예
+
+# 좋은 데이터의 기준 : 유일성
+# 동일한 데이터가 불필요하게 중복되어 있으면 안 됨
+
+# 이메일 인증, 주민등록번호 본인 확인, 휴대폰 번호 본인 확인 => 데이터의 유일성 유지
+
+
+# 좋은 데이터의 기준 : 통일성
+# 데이터가 통일한 형식으로 저장돼 있어야 함
+
+# 형식이란?
+# 데이터 타입, 단위, 포맷 등 다양한것을 의미
+
+
+# 좋은 데이터의 기준 : 정확성
+# 데이터가 정확해야 한다.
+# 주로 데이터를 모으는 과정에서 발생
+# 대표적으로 이상점이 있다면 올바르게 측정되었는지 확인해볼 필요가 있다.
+
+
+# 데이터 클리닝 : 완결성1
+print('데이터 클리닝 : 완결성1')
+attendance_df = pd.read_csv('attendance.csv', index_col = 0)
+attendance_df
+
+attendance_df.isnull()
+# isnull() : NaN이 있는값에는 True반환
+
+attendance_df.isnull().sum()
+# NaN의 갯수 확인
+print()
+
+
+# 데이터 클리닝 : 완결성2
+print('데이터 클리닝 : 완결성2')
+attendance_df2 = pd.read_csv('attendance.csv', index_col = 0)
+attendance_df2
+
+attendance_df2.dropna()
+# NaN이 있는 행 제거
+# 이렇게하면 2012, 2010, 2013년 데이터가 사라진다(분석하기 힘들어진다.)
+
+attendance_df2
+# 잘 보면 배구 컬럼에만 NaN이 있는것을 확인할 수 있다.
+attendance_df2.dropna(axis = 'columns')
+# NaN이 있는 배구컬럼만 제거
+# 배구컬럼은 분석할수 없다.
+
+attendance_df2.fillna(0)
+# NaN을 모두 0으로 변경
+
+attendance_df2.fillna(attendance_df2.mean())
+# NaN을 배구의 평균값으로 변경
+
+
+# 스팀 게임 데이터 정리하기
+print('스팀 게임 데이터 정리하기')
+steam_1_df = pd.read_csv('steam_1.csv')
+steam_1_df
+
+# 스팀 플랫폼에서 가장 반응이 좋은 게임이 무엇인지 알아보려고 한다.
+# 데이터를 살펴보니 결측값이 있다. 분석에 앞서 결측값을 제거해 보자.
+# 결측값이 있는 모든 row를 삭제하고, DataFrame을 출력
+steam_1_df.dropna(inplace = True)
+steam_1_df
+print()
+
+
+# 데이터 클리닝 : 유일성
+print('데이터 클리닝 : 유일성')
+dust_df = pd.read_csv('dust.csv', index_col = 0)
+dust_df
+dust_df.index
+dust_df.index.value_counts()
+dust_df.loc['07월 31일', :]
+# 중복된 인덱스 있는지 확인
+
+dust_df.drop_duplicates(inplace = True)
+dust_df
+# 중복된 날짜 데이터 삭제
+
+dust_df = dust_df.T.drop_duplicates().T
+dust_df
+# 중복된 지역 데이터 삭제
+# T는 전치 메서트 컬럼와 인덱스를 바꾼다
+# drop_duplicates는 인덱스나 컬럼이름이 달라도
+# 그 안에 있는 데이터들이 전부 같으면 중복된 데이터로 인식해서 지운다.
+print()
+
+
+# 데이터 클리닝 : 정확성1
+
+# 이상점이 잘못된 데이터라면?
+# 고치거나, 제거해야 한다.
+
+# 이상점을 판단하는 기준
+# 박스 플롯에서 25%지점을 Q1 75%지점을 Q3이라 한다.
+# 그리고 Q3와 Q1의 거리를 IQR이라 한다.
+# Q1보다 1.5 x IQR보다 밑에 있거나 Q3보다 1.5 x IQR보다 위에 있으면 
+# 이상점이라 한다.
+
+# 이상점이 제대로 된 데이터라면?
+# 분석에 방해가되면 제거하고, 의미있는 정보라면 그냥 둔다.
+
+
+# 데이터 클리닝 : 정확성2
+print('데이터 클리닝 : 정확성2')
+beer_df = pd.read_csv('beer.csv', index_col = 0)
+beer_df
+
+beer_df.plot(kind = 'box', y = 'abv')
+# 알콜 도수 박스플롯
+
+beer_df['abv'].describe()
+q1 = beer_df['abv'].quantile(0.25)
+q3 = beer_df['abv'].quantile(0.75)
+q1
+q3
+# 알코도수 25% 지점과 75%지점 확인
+
+iqr = q3 - q1
+beer_df[(beer_df['abv'] < q1 - 1.5 *iqr) | (beer_df['abv'] > q3 + 1.5 * iqr)]
+# 이상점 값 구하기
+
+beer_df.loc[2250, 'abv'] = 0.055
+beer_df.drop([963, 1856], axis = 'index', inplace = True)
+beer_df[(beer_df['abv'] < q1 - 1.5 *iqr) | (beer_df['abv'] > q3 + 1.5 * iqr)]
+# 이상점 데이터 수정 및 제거
+
+beer_df.plot(kind = 'box', y = 'abv')
+# 데이터 정제 후 알콜 도수 박스플롯
+print()
+
+
+# 데이터 클리닝 : 정확성3
+print('데이터 클리닝 : 정확성3')
+exam_outlier_df = pd.read_csv('exam_outlier.csv')
+exam_outlier_df
+# 관계적 이상점
+# 두 변수의 관계를 고려했을 때 이상한 데이터
+
+# exam_outlier_df.plot?
+exam_outlier_df.plot(kind = 'scatter', x  = 'reading score', y = 'writing score')
+exam_outlier_df.corr()
+# 읽기점수와 쓰기점수의 산점도 그래프와 상관계수 출력
+
+exam_outlier_df[exam_outlier_df['writing score'] > 100]
+# 쓰기점수가 100보다 큰 점수가 있다.(이상점)
+
+exam_outlier_df.drop(51, axis = 'index', inplace = True)
+exam_outlier_df.plot(kind = 'scatter', x = 'reading score', y = 'writing score')
+exam_outlier_df.corr()
+# 제거 후 산점도 그래프와 상관계수 출력
+
+rw_score = (exam_outlier_df['writing score'] > 90) & (exam_outlier_df['reading score'] < 40)
+exam_outlier_df[rw_score]
+# 혼자 동떨어져있는 데이터 출력
+
+exam_outlier_df.drop(373, axis = 'index', inplace = True)
+exam_outlier_df.plot(kind = 'scatter', x = 'reading score', y = 'writing score')
+exam_outlier_df.corr()
+# 위 데이터 제거후 산점도 그래프와 상관계수 출력
+print()
+
+
+# 영화 평점 분석하기1
+print('영화 평점 분석하기1')
+movie_metadata_df = pd.read_csv('movie_metadata.csv')
+movie_metadata_df
+# 영화 감독이 꿈인 래진이는 영화에 대한 데이터 분석을 해보려고 한다.
+# movie_metadata.csv에는 영화에 대한 제목, 감독, 배우, 평점, 예산 등의 정보가 있는데
+# 과연 예산을 많이 쓰면 소비자 평점이 높아질 지 궁금하다.
+# 산점도를 그려봤더니, 아주 큰 예산을 쓴 영화 몇 개 때문에 상관 관계를 파악할 수가 없다.
+# 너무 예산이 큰 일부 영화를 제거하고, 다시 분석해봐야 할 것 같다.
+# 예산을 기준으로 75% 지점에서 5 IQR 만큼 더한 것보다 큰 예산의 영화는 제거하고, 다시 산점도를 그려라.
+movie_metadata_df.columns
+movie_metadata_df.plot(kind = 'scatter', x = 'imdb_score', y = 'budget')
+movie_metadata_df['budget'].describe()
+q3 = movie_metadata_df['budget'].quantile(0.75)
+q1 = movie_metadata_df['budget'].quantile(0.25)
+
+iqr = q3 - q1 
+
+mv_budget = movie_metadata_df['budget'] > q3 + 5 * iqr
+movie_metadata_df.drop(movie_metadata_df[mv_budget].index, inplace = True)
+movie_metadata_df.plot(kind = 'scatter',  x = 'budget', y = 'imdb_score')
+print()
+
+
+# 영화 평점 분석하기2
+print('영화 평점 분석하기2')
+movie_metadata_df2 = pd.read_csv('movie_metadata.csv')
+movie_metadata_df2
+# 이번에도 예산이 너무 큰 영화 몇 개를 제거해보려고 한다.
+# 하지만 이번에는 IQR이 아니라 예산 상위 15개를 제거하려고 하는데
+# movie_metadata.csv에서 예산이 가장 높은 15개 영화를 제거하고, 산점도를 그려라.
+mv_budget = movie_metadata_df2['budget'].sort_values(ascending = False)[:15].index
+movie_metadata_df2.drop(mv_budget, inplace = True)
+movie_metadata_df2.plot(kind = 'scatter',  x = 'budget', y = 'imdb_score')
+print()
+# =============================================================================
+
+
+
+
+
+# 데이터 만들기
+# =============================================================================
+# 
+# =============================================================================
