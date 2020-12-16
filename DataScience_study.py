@@ -477,8 +477,8 @@ print()
 print('여행지 선정하기1')
 world_cities_df = pd.read_csv('world_cities.csv', index_col = 0)
 
-# 1. 주어진 데이터에는 총 몇 개의 도시와 몇 개의 나라가 있는지
-print('1. 주어진 데이터에는 총 몇 개의 도시와 몇 개의 나라가 있는지')
+# 1. 주어진 데이터에는 총 몇 개의 도시와 몇 개의 나라가 있는가
+print('1. 주어진 데이터에는 총 몇 개의 도시와 몇 개의 나라가 있는가')
 print(world_cities_df)
 print(world_cities_df['City / Urban area'].describe())
 # world_cities_df['City / Urban area'].value_counts().shape
@@ -486,18 +486,18 @@ print(world_cities_df['Country'].describe())
 # world_cities_df['Country'].value_counts().shape
 print()
 
-# 2. 주어진 데이터에서, 인구 밀도(명/sqKm) 가 10000 이 넘는 도시는 총 몇 개
-print('2. 주어진 데이터에서, 인구 밀도(명/sqKm) 가 10000 이 넘는 도시는 총 몇 개')
+# 2. 주어진 데이터에서, 인구 밀도(명/sqKm) 가 10000 이 넘는 도시는 총 몇 개인가
+print('2. 주어진 데이터에서, 인구 밀도(명/sqKm) 가 10000 이 넘는 도시는 총 몇 개인')
 print(world_cities_df)
 wc_count_df = world_cities_df[world_cities_df['Population'] / world_cities_df['Land area (in sqKm)'] > 10000]
 print(wc_count_df.shape)
-# wc_count_df.infro()
+# wc_count_df.info()
 print()
 
 # 3. 인구 밀도가 가장 높은 도시를 찾아봅시다.
 print('3. 인구 밀도가 가장 높은 도시를 찾아봅시다.')
 world_cities_df['인구밀도'] = world_cities_df['Population'] / world_cities_df['Land area (in sqKm)']
-print(world_cities_df.sort_values(by = '인구밀도', ascending = False))
+print(world_cities_df.sort_values(by = '인구밀도', ascending = False).head(1))
 print()
 
 
@@ -726,6 +726,7 @@ adobe_jobs = adobe_jobs[adobe_jobs['count'] != 0]
 adobe_jobs.plot(kind = 'pie', y = 'count')
 print()
 
+
 # 히스토그램
 print('히스토그램')
 body_df = pd.read_csv('body.csv', index_col = 0)
@@ -735,6 +736,7 @@ body_df.plot(kind = 'hist', y = 'Height', bins = 15)
 body_df.plot(kind = 'hist', y = 'Height', bins = 200)
 # 너무 많음
 print()
+
 
 # 스타벅스 음료 칼로리를 히스토그램으로 총 20개 구간으로 나눠서 출력
 print('스타벅스 음료 칼로리를 히스토그램으로 총 20개 구간으로 나눠서 출력')
@@ -1614,5 +1616,386 @@ print()
 
 # 데이터 만들기
 # =============================================================================
-# 
+# 데이터 만들기의 중요성
+
+# 데이터를 분석하기전에
+# 우선 데이터를 모아야 한다.
+
+
+# 데이터 다운로드 받기
+
+# 데이터를 구하는 가장 쉬운 방법은, 이미 누군가 만들어둔 데이터를 사용하는 것이다.
+# 대표적으로, 국가 기관에서는 공익 목적으로 여러 데이터를 공개한다.  
+# 그 외에도 데이터를 검색하는 사이트나, 데이터를 공유하는 사이트들이 있다.
+
+# 국내 사이트
+
+# 서울열린데이터광장  
+# https://data.seoul.go.kr/
+
+# 공공데이터포털  
+# https://www.data.go.kr
+
+# e-나라지표  
+# http://www.index.go.kr/
+
+# 국가통계포털  
+# http://kosis.kr
+
+# 서울특별시 빅데이터 캠퍼스  
+# https://bigdata.seoul.go.kr/
+
+# 통계청  
+# http://kostat.go.kr/
+
+# 해외 사이트
+
+# 구글 데이터 검색  
+# https://toolbox.google.com/datasetsearch
+
+# 캐글  
+# https://www.kaggle.com/datasets
+
+# Awesome Public Datasets Github  
+# https://github.com/awesomedata/awesome-public-datasets
+
+# Data and Story Library  
+# https://dasl.datadescription.com/
+
+# 데이터허브  
+# https://datahub.io/
+
+# 하지만 데이터에 저작권이 있기도 하니, 
+# 실제로 데이터를 활용할 때는 잘 확인하고 사용하셔야 한다.
+
+
+# 센서 사용하기
+
+# 센서 : 물리적인 현상을 감지하서 전기 신호로 변환 해 주는 장치
+# 아두이노, 라즈베리 파이에 약간의 프로그래밍을하면
+# 센서를 활용한 데이터 수집이 가능하다.
+
+
+# 웹에서 모으기
+
+# 가장 빠르게 데이터가 쌓이는 곳은 인터넷이다.
+
+# 웹에있는 데이터를 수집할 때 많이 사용하는 것이
+# 웹 스크레이핑과 웹 크롤링이다.
+
+# 하나의 특정 웹페이지에서 원하는 정보를 받아오는 것을 웹 스크레이핑이라 한다.
+# 웹페이지를 프로그램을 짜서 컴퓨터가 자동으로 여러 웹페이지를 수집하게 하는 것을
+# 웹크롤링이라 한다. 이러한 것을 해주는 프로그램을 웹크롤러라고 부른다
+
+
+# HTML 얼마나 많이 알아야 할까요?
+
+# 데이터를 모으려는 우리에게 중요한 건 태그의 구조입니다.  
+# 태그의 구조를 잘 이해한다면, 각 태그가 어떤 기능을 하는지 
+# 정확히 몰라도 데이터를 얻어올 수 있다.
+
+# HTML 태그의 구성
+# HTML 태그는 두 가지 요소로 구성되어 있다.  
+# 태그 이름과 속성(attribute)이다.
+
+# 1. 태그 이름
+# 태그 이름은 계속 봐왔던 p, li, img 이런 것들이다.  
+# 태그를 상징하는 <> 기호 안에 태그 이름을 가장 먼저 넣어주게 된다.  
+# <p>, <li>, <img> 처럼
+
+# 2. 속성
+# 모든 HTML 태그는 속성이라는 추가 정보를 가질 수 있다. 
+# 태그 이름이 아닌 것은 모두 속성이라고 생각하면 된다.
+# 속성은 일반적으로 속성 이름과 속성 값을 하나의 쌍으로 갖게 된다. (예: name="value")  
+# 만약 HTML 태그가 <p>, </p> 태그처럼 둘로 나누어져 있다면, 시작 태그에 속성을 적어준다.
+
+# <li id="favorite">우유</li>
+# 위 <li> 태그에는 id라는 속성이 있고, 그 값은 "favorite"이다
+# 한 태그가 여러 속성을 가질 수도 있다.
+
+# <img alt="logo" class="logo-img" src="/images/music/logo.png"/>
+# 위 img태그에는 총 3개의 속성이 있다.
+# alt라는 속성은 "logo"라는 값을, class라는 속성은 "logo-img"라는 값을, 
+# src라는 속성은 "/images/music/logo.png"라는 값을 각각 갖고 있다.
+
+# HTML 태그의 구조
+
+# 하나의 HTML 태그에 대해 이해했다면, 태그 사이의 관계에 대해서도 이해해야 한다.
+# 한 페이지의 HTML 태그는 서로 연결되어 있다.  
+# 이 구조가 마치 가계도나 나무(트리)와 유사해서, 부모 관계라고 부르거나 트리 구조라도고 부른다.
+# <ul>
+#     <li>커피</li>
+#     <li>녹차</li>
+#     <li>우유</li>
+# </ul>
+# 여기서 <ul> 태그가 <li> 태그를 포함하고 있으니 <ul> 태그가 부모, <li> 태그가 자녀인 셈이다.
+
+# HTML, 얼마나 알아야 하나요?
+
+# 목표가 무엇이냐에 따라 다르다.
+# 웹사이트에서 데이터를 모을 수 있는 정도가 목표라면, 앞서 말한 태그의 구조를 이해할 수 있는 수준이면 된다. 
+# 내부 원리를 자세히는 몰라도, 작동하는 프로그램을 만들 수는 있다. 
+# 더 나아가는 것은 여러분의 선택입니다.
+# 만약 기본적인 데이터 수집을 넘어 자동화 봇이나 복잡한 사이트의 
+# 크롤링 등 고급 응용을 할 수 있는 전문가 수준을 원한다면, 
+# 반드시 HTML과 CSS를 능숙하게 다루어야 한다. 
+# HTML과 CSS는 웹 크롤링과 웹 스크레이핑의 핵심 기술이기 때문이다.
+
+# 집의 구조를 가장 잘 이해하는 사람은 집을 짓는 사람이고  
+# 웹 사이트의 구조를 가장 잘 이해하는 사람은 웹 개발자다.  
+# HTML과 CSS이 능숙하면, 기본적인 데이터 수집 이상으로 무궁무진한 활용 가능성이 있다.
+
+
+# 서버와 클라이언트
+
+# 서버 -> 클라이언트
+# 서버 : 서비스를 제공하는쪽
+# 클라이언트 : 서비스를 제공 받는 쪽
+
+
+# 파이썬으로 서버에 요청 보내기
+print('파이썬으로 서버에 요청 보내기')
+import requests
+page = requests.get('https://www.google.com')
+# 서버에 요청
+type(page)
+page.text
+# 응답에 대한 내용(HTML)을 볼수있다.
+print()
+
+
+# TV시청률 크롤링1
+print('TV시청률 크롤링1')
+response = requests.get('https://workey.codeit.kr/ratings/index')
+rating_page = response.text
+print(rating_page)
+print()
+
+
+# 웹 사이트 주소 이해하기
+print('웹 사이트 주소 이해하기')
+
+# https://www.ikea.com/catalog/news?sorting=price&pageNumber=4
+# 소통방식 : http, https
+# 도메인 이름 : www.ikea.com
+# 경로 : catalog/news?
+# 쿼리스트링(파라미터) : sorting=price&pageNumber=4
+
+# https://en.wikipedia.org/wiki/Computer_programming#Debugging
+# 위치 지정 : #Debugging
+print()
+
+
+# TV 시청률 크롤힐2
+print('TV 시청률 크롤힐2')
+# 우리가 원하는 모든 기간의 데이터를 뽑아내기 위해, 티비랭킹닷컴 사이트를 자세히 살펴보자.
+
+# 웹사이트의 주소 구조를 파악해보고, 제공되는 모든 데이터를 받아올 수 있도록 
+# 모든 페이지의 HTML 코드(response의 text)를 가져와서 rating_pages에 저장해라.
+# 2010년 1월부터 2018년 12월까지 모든 달에 대해
+# 1주차~5주차 페이지를 순서대로 리스트에 넣으면 된다.(모든 달에 5주차가 있다고 가정하세요.)
+
+# year = 2011
+# month = 1
+# idx = 1
+# requests.get(f'https://workey.codeit.kr/ratings/index?year={month}&month={month}&weekIndex={idx}')
+
+# rating_pages = []
+# for i in range(2010, 2019):
+#     for j in range(1, 13):
+#         for z in range(0, 5):
+#             re_get = requests.get(f'https://workey.codeit.kr/ratings/index?year={i}&month={j}&weekIndex={z}')
+#             rating_pages.append(re_get.text)
+# len(rating_pages)
+# rating_pages[0]
+print()
+
+
+# 웹 페이지 스타일링 원리
+
+# 데이터 추출의 원리
+# 사실 HTML 코드에서 데이터를 골라내는 작업은 
+# 웹 페이지를 꾸미는 스타일링 원리와 밀접한 연관이 있다
+# 특정 태그를 선택한다는 공통점 때문이다.
+
+
+# CSS 선택자
+
+# CSS 선택자의 의미
+# 기본적으로 CSS 선택자는 HTML 태그의 스타일을 지정하기 위해 사용한다.  
+# 하지만 추출할 데이터의 위치를 지정할 때도 활용할 수 있다. 
+
+
+# 파싱1
+print('파싱1')
+
+# 파싱(Parsing)이란?
+# '파싱'이란 문자의 구조를 분석해서 원하는 정보를 얻어내는 걸 말한다.
+# 복잡한 HTML 코드에서 정보를 뽑아내는 것도 파싱의 일종이다.
+
+# Beautiful Soup
+# 파이썬에서는 Beautiful Soup이라는 툴로 HTML을 파싱한다.
+# 아래의 HTML 코드에서 '커피', '녹차', '우유'라는 텍스트 데이터를 추출하려고 한다.
+html_code = """<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Website</title>
+</head>
+<body>
+<h2>HTML 연습!</h2>
+
+<p>이것은 첫 번째 문단입니다.</p>
+<p>이것은 두 번째 문단입니다!</p>
+
+<ul>
+    <li>커피</li>
+    <li>녹차</li>
+    <li>우유</li>
+</ul>
+
+<img src='https://i.imgur.com/bY0l0PC.jpg' alt="coffee"/>
+<img src='https://i.imgur.com/fvJLWdV.jpg' alt="green-tea"/>
+<img src='https://i.imgur.com/rNOIbNt.jpg' alt="milk"/>
+
+</body>
+</html>"""
+
+# 1. BeautifulSoup 타입 만들기
+# HTML 코드를 파싱하려면, 먼저 HTML 코드를 'BeautifulSoup 타입'으로 바꿔줘야 한다.  
+from bs4 import BeautifulSoup
+# bs4 라이브러리의 BeautifulSoup불러오기
+
+soup = BeautifulSoup(html_code, 'html.parser')
+# BeautifulSoup타입으로 변
+
+type(soup)
+# type출력
+
+# 2. 특정 태그 선택하기
+# BeautifulSoup 타입에는 .select() 메소드를 쓸 수 있다
+# '선택한다'는 의미 괄호 안에 CSS 선택자를 넣으면 특정 HTML 태그만 선택할 수 있다
+# 예를 들어, 모든 <li> 태그를 가져오고 싶으면 CSS 선택자 'li'를 넘겨주면 된다.
+li_tags = soup.select('li')
+print(li_tags)
+# 모든 li태그 출력(리스트로)
+
+print(li_tags[0])
+# 첫번째 <li>태그 출력
+
+# 3. 태그에서 문자열 추출하기
+# .select()로 가져온 태그는, 사실 그냥 텍스트가 아니다.  
+type(li_tags[0])
+# 타입을 확인해 보면type이 bs4.element.Tag라 나온다.
+# BeautifulSoup 태그에는 여러 기능이 있는데, 그 중 하나가 텍스트 추출이다.
+print(li_tags[0].text)
+# 첫번째 <li> 태그의 텍스트 출력
+print()
+
+
+# 파싱2
+print('파싱2')
+html_code = """<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Website</title>
+</head>
+<body>
+<h2>HTML 연습!</h2>
+
+<p>이것은 첫 번째 문단입니다.</p>
+<p>이것은 두 번째 문단입니다!</p>
+
+<ul>
+    <li>커피</li>
+    <li>녹차</li>
+    <li>우유</li>
+</ul>
+
+<img src='https://i.imgur.com/bY0l0PC.jpg' alt="coffee"/>
+<img src='https://i.imgur.com/fvJLWdV.jpg' alt="green-tea"/>
+<img src='https://i.imgur.com/rNOIbNt.jpg' alt="milk"/>
+
+</body>
+</html>"""
+
+# <img> 태그의 src 속성에는 일반적으로 이미지 주소가 저장되어 있다.  
+# 이미지 주소를 받아올 것이다.  
+soup = BeautifulSoup(html_code, 'html.parser')
+img_tag = soup.select('img')
+print(img_tag)
+# 모든 <img>태그 출력
+
+print(img_tag[0])
+# 첫 번째 요소 출력
+
+# 태그에 .text를 붙이면 텍스트가 추출된 것처럼 
+# 태그에 ["속성 이름"]을 붙여주면 해당 속성의 값을 가져올 수 있다.  
+# 이미지 주소는 src라는 속성에 저장되어 있으니, ["src"]라고 붙이면 된다.
+
+print(img_tag[0]['src'])
+# 첫 번째 요소의 'src' 속성 값 가져오기
+
+img_src = []
+for img in img_tag:
+    img_src.append(img['src'])
+print(img_src)
+# 전체 <img>태그 src 속성값 추출 및 출력
+print()
+
+
+# 크롬 개발자 도구로 선택자 알아내기
+
+# HTML 코드에 웹사이트의 내용물이 모두 드러난다.
+# 하지만 코드만으론 구조를 파악하기 어렵다.
+# 조금 더 쉽게 HTML 태그의 구조를 알아내려면 
+# 크롬 브라우저의 개발자 도구를 사용하면 된다.
+# 알고 싶은 요소를 오른쪽 클릭하면 영어로 Inspect 혹은 한국말로 검사라고 나온다.
+
+# 개발자 도구에서 특정 HTML 요소를 오른쪽 클릭하고 
+# Copy 메뉴의 Copy Selector를 클릭하면, CSS 선택자가 클립보드에 복사된다.  
+# 텍스트 에디터에 붙여넣기하면
+# 개발자 도구를 잘 활용하면 파싱이 좀 더 쉬워진다.
+
+
+# 파싱3
+print('파싱3')
+# 이번에는 실제 웹사이트의 response를 받아서 파싱할것이다. 
+# 음악 사이트의 인기 아티스트를 추출하겠다.
+
+response = requests.get('https://workey.codeit.kr/music/index')
+# HTML 코드 받아오기
+
+print(response.text)
+# 결과출력
+
+soup = BeautifulSoup(response.text, 'html.parser')
+# BeautifulSoup 타입으로 변환
+
+print(soup)
+# 결과출력
+
+# 우리가 원하는 인기 아티스트는 <h3>태그에 있다
+# 그 아래에 우리가 10명의 아티스트들이 있다.
+# 인기 아티스트를  'popular__order'클래스명을 가지는  <ul> 태그가 감싸고 있다. 
+# 그리고 그 안에 <li>태그가 <span>태그와 이름을 담고 있다.
+
+# 태그 골라내기
+
+li_tags = soup.select('.popular__order li')
+print(li_tags)
+# "popular__order" 클래스를 가진 태그에 중첩된 모든 <li> 태그 선택
+
+popular_artists = []
+for i in li_tags:
+    popular_artists.append(i.text)
+print(popular_artists)
+# <li>태그 안에 있는 텍스트만 꺼내기
+
+# 앞뒤 공백만 제거 한다면 우리가 원하는 데이터만 고를수 있다.
+# 다시 처음부터 하면
+popular_artists = []
+for i in li_tags:
+    popular_artists.append(i.text.strip())
+print(popular_artists)
+# 공백 제거 후 추출
 # =============================================================================
