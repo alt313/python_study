@@ -599,9 +599,9 @@ enrolment_df3 = pd.read_csv('enrolment_3.csv')
 
 # 아래 세 가지 조건을 만족하도록 코드를 작성
 # 1. 같은 크기의 강의실이 필요한 과목에 대해 알파벳 순서대로 방 번호를 배정하세요.
-#    예를 들어 Auditorium이 필요한 과목으로 “arts”, “commerce”, “science” 세 과목이 있다면, 
-#    “arts”는 “Auditorium-1”, “commerce”는 “Auditorium-2”, “science”는 “Auditorium-3” 
-#    순서로 방 배정이 되어야 한다.
+#     예를 들어 Auditorium이 필요한 과목으로 “arts”, “commerce”, “science” 세 과목이 있다면, 
+#     “arts”는 “Auditorium-1”, “commerce”는 “Auditorium-2”, “science”는 “Auditorium-3” 
+#     순서로 방 배정이 되어야 한다.
 # 2. “status” column이 “not allowed”인 수강생은 “room assignment” column을 그대로 “not assigned”로 남겨둡니다.
 # 3. “room assignment” column의 이름을 “room number”로 바꿔주세요.
 
@@ -654,8 +654,6 @@ print()
 
 
 
-
-
 # 데이터 분석과 시각화
 # =============================================================================
 # 시각화의 두 가지 목적
@@ -678,6 +676,7 @@ print()
 # 한국, 미국, 영국, 독일, 중국, 일본의 GDP그래프를 출력
 print('한국, 미국, 영국, 독일, 중국, 일본의 GDP그래프를 출력')
 gdp_df = pd.read_csv('gdp.csv', index_col = 0)
+gdp_df
 
 from_nm = pd.Series(gdp_df.columns)
 from_nm[from_nm.str.startswith('U')]
@@ -706,12 +705,14 @@ managers_male = managers[managers['gender'] == 'Male']
 managers_male.iloc[:4, :].plot(x = 'race_ethnicity', y = 'count', kind = 'bar')
 print()
 
+
 # 파이 그래프
 print('파이 그래프')
 # 절대적인 수치보다 비율을 표기
 broadcast_df8 = pd.read_csv('broadcast.csv', index_col = 0)
 broadcast_df8.loc[2017].plot(kind = 'pie')
 print()
+
 
 # 어도비 전체 직원들의 직군 분포를 파이 그래프로 출력
 print('어도비 전체 직원들의 직군 분포를 파이 그래프로 출력')
@@ -746,6 +747,7 @@ starbucks_drinks_df['Calories']
 starbucks_drinks_df.plot(kind = 'hist', y = 'Calories', bins = 20)
 print()
 
+
 # 박스 플롯
 print('박스 플롯')
 # 위에서부터 순서대로 
@@ -762,6 +764,7 @@ exam_df.plot(kind = 'box', y = 'math score')
 exam_df.plot(kind = 'box', y = ['math score', 'reading score', 'writing score'])
 print()
 
+
 # 스타벅스 음료 칼로리를 박스 플롯으로 출력
 print('스타벅스 음료 칼로리를 박스 플롯으로 출력')
 starbucks_drinks_df2 = pd.read_csv('starbucks_drinks.csv')
@@ -769,6 +772,7 @@ starbucks_drinks_df2
 
 starbucks_drinks_df2.plot(kind = 'box', y = 'Calories')
 print()
+
 
 # 산점도
 print('산점도')
@@ -815,6 +819,7 @@ import seaborn as sns
 # 그래프 아래의 모든 면적을 더하면 1(100%)이다.
 print()
 
+
 # KDE Plot
 print('KDE Plot')
 body_df2 = pd.read_csv('body.csv', index_col = 0)
@@ -825,6 +830,7 @@ sns.kdeplot(body_df2['Height'], bw = 0.5)
 sns.kdeplot(body_df2['Height'], bw = 2)
 # bw를 적당하게 값을 줘야한다.
 print()
+
 
 # 승차인원에 대한 KDE Plot를 그려라
 print('승차인원에 대한 KDE Plot를 그려라')
@@ -1985,17 +1991,267 @@ li_tags = soup.select('.popular__order li')
 print(li_tags)
 # "popular__order" 클래스를 가진 태그에 중첩된 모든 <li> 태그 선택
 
-popular_artists = []
-for i in li_tags:
-    popular_artists.append(i.text)
-print(popular_artists)
+# popular_artists = []
+# for i in li_tags:
+#     popular_artists.append(i.text)
+# print(popular_artists)
 # <li>태그 안에 있는 텍스트만 꺼내기
 
 # 앞뒤 공백만 제거 한다면 우리가 원하는 데이터만 고를수 있다.
 # 다시 처음부터 하면
-popular_artists = []
-for i in li_tags:
-    popular_artists.append(i.text.strip())
-print(popular_artists)
+# popular_artists = []
+# for i in li_tags:
+#     popular_artists.append(i.text.strip())
+# print(popular_artists)
 # 공백 제거 후 추출
+print()
+
+
+# 그녀의 전화번호를 찾아서
+print('그녀의 전화번호를 찾아서')
+# 운명적인 그녀를 만났습니다. 하지만 오렌지 보틀에서 일한다는 것 말고는 아는 게 없다.
+# 오렌지 보틀의 웹사이트에 가서, 모든 지점의 전화번호를 모아보려고 한다.
+# 모든 지점의 전화번호가 포함된 리스트 출력
+# response = requests.get('https://workey.codeit.kr/orangebottle/index')
+# response.text
+# soup = BeautifulSoup(response.text, 'html.parser')
+
+# span_phone = soup.select('.container .phoneNum')
+
+# phone_num = []
+# for i in span_phone:
+#     phone_num.append(i.text)
+# print(phone_num)
+# print()
+
+
+# 검색어 순위 받아오기
+print('검색어 순위 받아오기')
+# 음악 사이트의 검색어 순위를 받아오려 한다.
+# '검색어 순위'의 1위~10위 데이터를 파싱해서 리스트 출력
+
+# response = requests.get('https://workey.codeit.kr/music/index')
+# soup = BeautifulSoup(response.text, 'html.parser')
+# rank = soup.select('.rank .list')
+
+# rank[0].text.split()[2]
+
+# search_ranks = []
+# for i in rank:
+#     search_ranks.append(i.text.split()[2])
+# print(search_ranks)    
+print()
+
+
+# 필요한 페이지만 가져오기
+print('필요한 페이지만 가져오기')
+# 앞선 과제 TV 시청률 크롤링2를 돌이켜 보면.  
+# 우리는 모든 달에 5주차가 있다고 가정하고, 반복문을 작성했다.
+# 하지만 사실 5주차가 없는 달도 있다.  
+# 사실, 5주차가 없는 달은 아예 페이지를 안 받아오는게 더 바람직하다.
+
+# 이런 상황은 생각보다 많이 발생하는데
+# SSG닷컴에서 'nintendo'를 검색하면 총 몇 개의 결과 페이지가 있을까요?
+# 예상할 수가 없다. 심지어 날마다 달라질 수도 있다.
+
+# SSG닷컴에서 'nintendo'를 검색하면, 주소가 
+# http://www.ssg.com/search.ssg?target=all&query=nintendo로 바뀐다.
+
+# 다음 페이지로 이동해 보면
+# http://www.ssg.com/search.ssg?target=all&query=nintendo&page=2
+# 뒤에 &page=2 가 추가된다. 이 부분을 활용해서 페이지를 지정하고 있다.
+
+# nintendo 검색 결과에 999 페이지도 있을까?.  
+# http://www.ssg.com/search.ssg?target=all&query=nintendo&page=999로 들어가면 
+# "검색어와 일치하는 상품이 없습니다." 라 나온다.
+
+# 여기서 힌트를 얻을 수 있다. 
+# 계속해서 페이지를 가져오다가, 이 페이지를 만나면 중단하면 된다.
+
+# 검색 결과가 없는지 아닌지는 어떻게 확인할까?  
+# 두 페이지를 개발자 도구로 직접 한번 비교해 보자.  
+# 상품이 있는 페이지: http://www.ssg.com/search.ssg?target=all&query=nintendo&page=9  
+# 상품이 없는 페이지: http://www.ssg.com/search.ssg?target=all&query=nintendo&page=999
+
+# 빈 페이지인지 확인하는 방법은 여러 가지이겠지만, 
+# "검색어와 일치하는 상품이 없습니다."라는 문구를 담고 있는 
+# csrch_tip 클래스의 유무로 한번 확인해 보자. csrc_tip 클래스가 없을 때만 페이지를 저장하는 거다.
+
+
+# 참고로, 연속으로 페이지를 가져오려고 하면 사이트에서 차단을 하는 경우도 있으므로, 
+# 한 페이지를 가져온 뒤 3초간 쉬었다가 다음 페이지를 가져오도록 해 보자. 
+# 처음에 import time을 하고, 3초 멈추고 싶은 곳에 time.sleep(3) 이라고 적으면 된다.  
+import time
+
+# 빈 리스트 생성
+# pages = []
+
+# 첫 페이지 번호 지정
+# page_num = 1
+# while True:
+#     # HTML코드 받아오기
+#     response = requests.get(f'http://www.ssg.com/search.ssg?target=all&query=nintendo&page={page_num}')
+    
+#     # BeautifulSoup 타입으로 변환
+#     soup = BeautifulSoup(response.text, 'html.parser')
+    
+#     # '.csrch_tip'클래스가 없을때만 HTML코드 담기
+#     if len(soup.select('.csrch_tip')) == 0:
+#         pages.append(soup)
+#         print(f'{page_num}번째 페이지 가져오기 완료')
+#         page_num += 1
+#         time.sleep(3)
+#     else:
+#         break
+
+# # 가져온 페이지 개수 출력
+# print(f'총 {len(pages)}페이지')
+print()
+
+
+# TV 시청률 크롤링3
+print('TV 시청률 크롤링3')
+# 티비랭킹닷컴 사이트를 다시 크롤링해보려 한다.
+# 앞선 과제 TV 시청률 크롤링 pt. 2에서는 모든 달에 5주차가 있다고 가정하여 받아왔다.
+# 이번에는 파싱을 활용해서 실제로 데이터가 있는 페이지만 받아오려고 하는데
+# 2010년 1월부터 2018년 12월까지 모든 달에 대해, 
+# 데이터가 있는 모든 페이지의 HTML 코드(response의 text)를 rating_pages에 저장해 보세요.
+
+# 주의: BeautifulSoup 타입으로 변환한 코드가 아닌, response의 text를 리스트에 저장
+
+# year = 2010
+# month = 3
+# week_idx = 3
+
+# response = requests.get(f'https://workey.codeit.kr/ratings/index?year={year}&month={month}&weekIndex={week_idx}')
+# soup = BeautifulSoup(response.text, 'html.parser')
+# len(soup.select('.rank'))
+
+# rating_pages = []
+# for i in range(2010, 2019):
+#     for j in range(1, 13):
+#         for z in range(0, 5):
+#             response = requests.get(f'https://workey.codeit.kr/ratings/index?year={i}&month={j}&weekIndex={z}')
+#             soup = BeautifulSoup(response.text, 'html.parser')
+#             if len(soup.select('.rank')) != 1:
+#                 rating_pages.append(response.text)
+            
+                
+# print(len(rating_pages))
+# print(rating_pages[0])
+# print()
+
+
+# 웹 페이지를 DataFrame으로
+print('웹 페이지를 DataFrame으로')
+
+# SSG의 검색 결과를, DataFrame을 만드는 방법
+
+# 어떻게 하면 DataFrame을 만들 수 있을까?  
+# DataFrame을 만드는 방법에는 여러 가지가 있고, 그중 하나는 리스트를 담은 리스트가 있다.  
+# 기억이 잘 안 나시는 분은 이전 레슨을 참고
+# 우리는 웹 페이지에서 상품의 정보를 파싱한 뒤, 리스트를 담은 리스트 형태로 저장할 것이다.
+
+# DataFrame 설계하기
+
+# 먼저 하나의 레코드(row)에 대한 설계를 한다.  
+# column이 "이름", "가격", "이미지 주소" 총 세 개니까, 다음과 같은 형태로 만든다.
+# ["이름 1", "가격 1", "이미지 주소 1"]
+# 그리고 이 레코드가 여러 개 모이면, DataFrame을 만들 수 있다.  
+# 우리가 결국 원하는 형태는 이런 형태다.
+# [["이름 1", "가격 1", "이미지 주소 1"], 
+# ["이름 2", "가격 2", "이미지 주소 2"], 
+# ["이름 3", "가격 3", "이미지 주소 3"]]
+
+# 파싱하기
+
+# 이제 방법을 알았으니, 데이터를 파싱해서 DataFrame으로 만들어 보자.
+# # 빈 리스트 생성
+# records = []
+
+# # 시작 페이지 지정
+# page_num = 1
+
+# while True:
+#     # HTML 코드 받아오기
+#     response = requests.get("http://www.ssg.com/search.ssg?target=all&query=nintendo&page=" + str(page_num))
+
+#     # BeautifulSoup 타입으로 변형하기
+#     soup = BeautifulSoup(response.text, 'html.parser')
+
+#     # "prodName" 클래스가 있을 때만 상품 정보 가져오기
+#     if len(soup.select('.csrch_tip')) == 0:
+#         product_names = soup.select('.cunit_info > div.cunit_md.notranslate > div > a > em.tx_ko')
+#         product_prices = soup.select('.cunit_info > div.cunit_price.notranslate > div.opt_price > em.ssg_price')
+#         product_urls = soup.select('.cunit_prod > div.thmb > a > img')
+#         print(f'{page_num}페이지')
+#         page_num += 1
+#         time.sleep(3)
+        
+#         # 상품의 정보를 하나의 레코드로 만들고, 리스트에 순서대로 추가하기
+#         for i in range(len(product_names)):
+#             record = []
+#             record.append(product_names[i].text)
+#             record.append(product_prices[i].text.strip())
+#             record.append("https://www.ssg.com" + product_urls[i].get('src'))
+#             records.append(record)
+#     else:
+#         break
+    
+# print(records)
+
+# DataFrame 만들기
+# 이제 DataFrame 형태로 만들어주면 된다.
+# df = pd.DataFrame(data = records, columns = ['이름', '가격', '이미지 주소'])
+
+# DataFrame 출력
+# print(df)
+print()
+
+
+# TV 시청률 크롤링 최종 프로젝트
+print('TV 시청률 크롤링 최종 프로젝트')
+# 티비랭킹닷컴의 데이터를 DataFrame으로 만들어서 분석해보려 한다.
+# period, rank, channel, program, rating 컬럼을 가지는 DataFrame을 만들어라.
+
+# response = requests.get('https://workey.codeit.kr/ratings/index?year=2010&month=1&weekIndex=0')
+# soup = BeautifulSoup(response.text, 'html.parser')
+
+# # period추출
+# soup.select('#weekSelectBox > option')[0].text
+
+# # rank추출
+# soup.select('tr.row > td.rank')[0]
+
+# # channel추출
+# soup.select('tr.row > td.channel')[0]
+
+# # program추출
+# soup.select('tr.row > td.program')
+
+# # rating(시청률)추출
+# soup.select('tr.row > td.percent')
+
+
+# ch_lists = []
+# for i in range(2010, 2019):
+#     for j in range(1, 13):
+#         for z in range(0, 5):
+#             response = requests.get(f'https://workey.codeit.kr/ratings/index?year={i}&month={j}&weekIndex={z}')
+#             soup = BeautifulSoup(response.text, 'html.parser')
+            
+#             if len(soup.select('tr.row')) > 1:
+#                 for ch in range(len(soup.select('tr.row')) - 1):
+#                     ch_list = []
+#                     ch_list.append(soup.select('#weekSelectBox > option')[z].text)
+#                     ch_list.append(soup.select('tr.row > td.rank')[ch].text)
+#                     ch_list.append(soup.select('tr.row > td.channel')[ch].text)
+#                     ch_list.append(soup.select('tr.row > td.program')[ch].text)
+#                     ch_list.append(soup.select('tr.row > td.percent')[ch].text)
+#                     ch_lists.append(ch_list)
+        
+
+# df = pd.DataFrame(data = ch_lists, columns = ['period', 'rank', 'channel', 'program', 'rating'])
+# print(df)
+# print()
 # =============================================================================
