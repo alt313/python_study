@@ -838,6 +838,7 @@ subway_df = pd.read_csv('subway.csv')
 sns.kdeplot(subway_df['in'])
 print()
 
+
 # KDE활용 예시
 print('KDE활용 예시')
 body_df3 = pd.read_csv('body.csv', index_col = 0)
@@ -869,7 +870,7 @@ print('LM Plot')
 body_df4 = pd.read_csv('body.csv', index_col = 0)
 body_df4
 sns.lmplot(data = body_df4, x = 'Height', y = 'Weight')
-# 키와 몸무게가 연관서이 많이 없기때문에 선과 점이 많이 떨어져있다.
+# 키와 몸무게가 연관성이 많이 없기때문에 선과 점이 많이 떨어져있다.
 print()
 
 # 카테고리별 시각화
@@ -883,7 +884,7 @@ sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'strip')
 # 카테고리별로 얼만큼 분포가 나눠져 있는지 볼수있다.
 laptops_df2['processor_brand'].unique() # 프로세서
 sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'strip', hue = 'processor_brand')
-# hue옵션을 색을 다르게 해주는 옵션, 하지만 점들이 겹쳐져있어서 보기 불편
+# hue옵션은 색을 다르게 해주는 옵션, 하지만 점들이 겹쳐져있어서 보기 불편
 sns.catplot(data = laptops_df2, x = 'os', y = 'price', kind = 'swarm', hue = 'processor_brand')
 # kind = 'swarm'으로 하면 점들이 겹치지않고 펼쳐져서 보기 편해진다.
 print()
